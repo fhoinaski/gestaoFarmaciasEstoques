@@ -6,18 +6,12 @@ import { ListMenuNavbar } from './ListMenuNavbar';
 
 //para renderizar o menu  da farmacia e do medicamento
 const listaMenuFarmacia = ["Mapa de Farmácias", "Cadastrar Farmácia"];
-const listaMenuMedicamentos = ["Medicamentos", "Cadastrar Medicamento"];
+const listaMenuMedicamentos = ["Lista Medicamentos", "Cadastrar Medicamento"];
 
 
 const Navbar = () => {
   const { isAuthenticated, logoutUser } = useAuthState();
 
-
-  const navigate = useNavigate();
-  const handleLogout = () => {
-    logoutUser();
-    navigate('/'); // redireciona para a página inicial
-  };
 
   return (
     <nav className="bg-orange-50 p-4  flex justify-between pl-8 pr-8">
@@ -36,7 +30,7 @@ const Navbar = () => {
               listaItens={listaMenuFarmacia}
             />
 
-            <div onClick={handleLogout} className="px-3 text-orange-500  flex items-center py-2 cursor-pointer rounded-md bg-white hover:bg-gray-200 focus:outline-none" >
+            <div onClick={logoutUser} className="px-3 text-orange-500  flex items-center py-2 cursor-pointer rounded-md bg-white hover:bg-gray-200 focus:outline-none" >
               <CiLogin className='mr-1 rotate-180' />Logout
             </div>
           </div>

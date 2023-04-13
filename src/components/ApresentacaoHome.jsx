@@ -23,7 +23,7 @@ const Apresentacao = () => {
                     </p>
                 </div>
                 <div className=' opacity-70 ml-5 -mb-20 hidden md:block'>
-                    <img src="/public/homeImg.jpeg" alt="" className='shadow-xl rounded-xl'  />
+                    <img src="/homeImg.jpeg" alt="" className='shadow-xl rounded-xl'  />
                 </div>
             </div>
         </section>
