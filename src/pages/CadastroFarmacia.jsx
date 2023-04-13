@@ -170,7 +170,6 @@ const CadastroFarmacia = () => {
                   type="text"
                   id="complemento"
                   name="complemento"
-                  required
                 />
               </div>
               <div className="mb-4 md:col-span-3 col-span-2">
