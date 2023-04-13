@@ -1,7 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+
+
 const Apresentacao = () => {
+    
     return (
         <section className="bg-gray-100">
             <div className="max-w-7xl flex mx-auto items-center py-16 px-4 sm:px-6 lg:px-8">
