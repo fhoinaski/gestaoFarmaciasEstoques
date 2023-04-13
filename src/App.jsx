@@ -2,15 +2,18 @@
 import { Outlet } from "react-router-dom"
 import Footer from "./components/Footer"
 import Navbar from "./components/Navbar"
+import { AuthProvider } from "./contexts/userContext/AuthProvider"
 
 function App() {
-  
+
 
   return (
     <>
-      <Navbar/>
-      <Outlet/>
-      <Footer/>
+      <AuthProvider>
+        <Navbar />
+        <Outlet />
+        <Footer />
+      </AuthProvider>
     </>
   )
 }
