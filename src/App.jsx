@@ -1,8 +1,9 @@
 
 import { Outlet } from "react-router-dom"
 import Footer from "./components/Footer"
-import Navbar from "./components/Navbar"
+import HeaderNavbar from "./components/HeaderNavbar"
 import { AuthProvider } from "./contexts/userContext/AuthProvider"
+import React from "react"
 
 function App() {
 
@@ -10,7 +11,7 @@ function App() {
   return (
     <>
       <AuthProvider>
-        <Navbar />
+      <HeaderNavbar />
         <Outlet />
         <Footer />
       </AuthProvider>
