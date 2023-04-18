@@ -1,24 +1,60 @@
 import React, { useState } from 'react';
-import { FiChevronsRight, FiChevronsLeft} from "react-icons/fi";
+import { FiChevronsRight, FiChevronsLeft } from "react-icons/fi";
+import { useFarmaciaState } from '../contexts/farmaciaContext/useFarmacia';
+import SuccessoModal from '../components/SucessoModal';
+import { Container, Row, Col, Form, FormGroup, FormLabel, FormControl, Alert, Button } from 'react-bootstrap';
+import InputMask from 'react-input-mask';
+
+
+
+
 
 const CadastroFarmacia = () => {
   const [isFlipped, setIsFlipped] = useState(false);
+  const [cadastroSucesso, setCadastroSucesso] = useState(false);
 
+  const { farmData, updateFarmData, registerFarmacia, verificaCamposObrigatorios, buscarEndereco } = useFarmaciaState();
+
+  // gira o card
   const handleClick = () => {
     setIsFlipped(!isFlipped);
   };
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    // Implemente a lógica de envio do formulário
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    updateFarmData(name, value);
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (verificaCamposObrigatorios()) {
+      const farmacia = registerFarmacia(farmData);
+      if (farmacia) {
+        setCadastroSucesso(true);
+        console.log(farmacia);
+      } else {
+        alert("Erro ao cadastrar farmácia.");
+      }
+    } else {
+      alert("Por favor, preencha todos os campos obrigatórios.");
+    }
+  };
+
+
+
   return (
+
+
     <div className="min-h-screen bg-gray-100 py-6 flex flex-col justify-center sm:py-12">
+
+      
       <div className="relative py-3 sm:max-w-xl md:max-w-2xl lg:max-w-3xl xl:max-w-4xl 2xl:max-w-5xl sm:mx-auto">
+        <SuccessoModal isOpen={cadastroSucesso} onClose={() => setCadastroSucesso(false)} />
         <div className="absolute inset-0 bg-gradient-to-r from-orange-400 to-orange-600 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl"></div>
         <div
-          className={`bg-white shadow-lg sm:rounded-3xl ${isFlipped ? "pb-28" : "pb-10"
-            } md:-pb-10 lg:-pb-10 sm:p-20 px-20 transform py-5 transition-all duration-1000 ease-in-out`}
+          className={`bg-white shadow-lg sm:rounded-3xl md:-pb-10 sm:p-20 px-4 md:px-10 transform ${isFlipped ? "pb-64 md:pb-36" : "py-4"
+            } transition-all duration-1000 ease-in-out`}
           style={{
             transformStyle: 'preserve-3d',
             perspective: '1000px',
@@ -26,179 +62,216 @@ const CadastroFarmacia = () => {
           }}
         >
           <div
-            className={` w-full h-full top-10 md:p-0 lg:p-0 sm:p-10 ${isFlipped ? 'opacity-0' : 'opacity-100'} transition-opacity duration-350`} style={{ backfaceVisibility: 'hidden' }}
+            className={` w-full h-full top-10 md:p-0  sm:p-10 ${isFlipped ? 'opacity-0' : 'opacity-100'} transition-opacity duration-1000`} style={{ backfaceVisibility: 'hidden' }}
           >
-            <h1 className="text-center md:text-2xl font-semibold mb-6"> Cadastro social Farmácia </h1>
-            <form onSubmit={handleSubmit} className="grid grid-cols-4 gap-4">
-
-              <div className="mb-4 col-span-4">
-                <label className="block text-sm font-medium text-gray-700" htmlFor="razaoSocial">
-                  Razão Social
-                </label>
-                <input
-                  className="mt-1 block w-full py-2 border border-gray-300 rounded-md"
-                  type="text"
-                  id="razaoSocial"
-                  name="razaoSocial"
-                  required
-                />
-              </div>
-              <div className="mb-4 col-span-4 md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 " htmlFor="cnpj">
-                  CNPJ
-                </label>
-                <input
-                  className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-                  type="number"
-                  id="cnpj"
-                  name="cnpj"
-                  required
-                />
-              </div>
-              <div className="mb-4 col-span-4 md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700" htmlFor="nomeFantasia">
-                  Nome Fantasia
-                </label>
-                <input
-                  className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-                  type="text"
-                  id="nomeFantasia"
-                  name="nomeFantasia"
-                  required
-                />
-              </div>
-              <div className="mb-4 col-span-4">
-                <label className="block text-sm font-medium text-gray-700" htmlFor="email">
-                  E-mail
-                </label>
-                <input
-                  className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-                  type="email"
-                  id="email"
-                  name="email"
-                  required
-                />
-              </div>
-              <div className="mb-4 col-span-2 md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700" htmlFor="telefone">
-                  Telefone
-                </label>
-                <input
-                  className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-                  type="tel"
-                  id="telefone"
-                  name="telefone"
-                  required
-                />
-              </div>
-              <div className="mb-4 col-span-2 md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700" htmlFor="celular">
-                  Celular
-                </label>
-                <input
-                  className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-                  type="tel"
-                  id="celular"
-                  name="celular"
-                  required
-                />
-              </div>
-            </form>
+            <h1 className="text-center md:text-2xl font-semibold mb-6"> Cadastrar Farmácia </h1>
+            <Container>
+              <Form onSubmit={handleSubmit}>
+                <Row form>
+                  <Col md={12}>
+                    <FormGroup>
+                      <FormLabel htmlFor="razaoSocial">Razão Social</FormLabel >
+                      <FormControl
+                        type="text"
+                        name="razaoSocial"
+                        id="razaoSocial"
+                        value={farmData.razaoSocial}
+                        onChange={handleChange}
+                        required
+                      />
+                    </FormGroup>
+                  </Col>
+                  <Col md={6}>
+                    <FormGroup>
+                      <FormLabel htmlFor="cnpj">CNPJ</FormLabel>
+                      <InputMask className="input-mask"
+                        mask="99.999.999/9999-99"
+                        type="text"
+                        name="cnpj"
+                        id="cnpj"
+                        value={farmData.cnpj}
+                        onChange={handleChange}
+                        required
+                      />
+                    </FormGroup>
+                  </Col>
+                  <Col md={6}>
+                    <FormGroup>
+                      <FormLabel htmlFor="nomeFantasia">Nome Fantasia</FormLabel >
+                      <FormControl
+                        type="text"
+                        name="nomeFantasia"
+                        id="nomeFantasia"
+                        value={farmData.nomeFantasia}
+                        onChange={handleChange}
+                        required
+                      />
+                    </FormGroup>
+                  </Col>
+                  <Col md={12}>
+                    <FormGroup>
+                      <FormLabel htmlFor="email">E-mail</FormLabel >
+                      <FormControl
+                        type="email"
+                        name="email"
+                        id="email"
+                        value={farmData.email}
+                        onChange={handleChange}
+                        required
+                      />
+                    </FormGroup>
+                  </Col>
+                  <Col md={6}>
+                    <FormGroup>
+                      <FormLabel htmlFor="telefone">Telefone</FormLabel >
+                      <InputMask className="input-mask"
+                        mask="(99) 9999-9999"
+                        type="tel"
+                        name="telefone"
+                        id="telefone"
+                        value={farmData.telefone}
+                        onChange={handleChange}
+                        required
+                      />
+                    </FormGroup>
+                  </Col>
+                  <Col md={6}>
+                    <FormGroup>
+                      <FormLabel htmlFor="celular">Celular</FormLabel >
+                      <InputMask className="input-mask"
+                        mask="(99) 9999-99999"
+                        type="tel"
+                        name="celular"
+                        id="celular"
+                        value={farmData.celular}
+                        onChange={handleChange}
+                        required
+                      />
+                    </FormGroup>
+                  </Col>
+                </Row>
+              </Form>
+            </Container>
             <div className='flex justify-end mt-5'><span onClick={handleClick} className='text-sm flex bg-slate-50 px-3 py-1 rounded-3xl shadow-md  mx-auto md:mx-0 items-center cursor-pointer hover:bg-slate-100'>Endereço da Farmacia<FiChevronsRight className='ml-2 ' /></span></div>
           </div>
-
           <div
-            className={`w-full h-full absolute top-10 md:top-20 lg:top-20 left-0 md:py-0 lg:py-0 px-20  ${isFlipped ? 'opacity-100' : 'opacity-0'} transition-opacity duration-350`} style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
-          >
-            <h1 className="text-center md:text-2xl font-semibold mb-6">Endereço da Farmácia</h1>
-            <form onSubmit={handleSubmit} className=" grid grid-cols-4  gap-4  ">
+            className={`w-full h-full absolute top-10 md:top-10 left-0 md:py-0 px-4 ${isFlipped ? 'opacity-100' : 'opacity-0'} transition-opacity`}
+            style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)', transitionDuration: '1500ms' }}
 
-              <div className="mb-4 md:col-span-1 col-span-4">
-                <label className="block text-sm font-medium text-gray-700" htmlFor="cep">
-                  Cep
-                </label>
-                <input
-                  className="mt-1 block w-full py-2 border border-gray-300 rounded-md"
-                  type="number"
+          >
+
+            <h1 className="text-center md:text-2xl font-semibold mb-6">Endereço</h1>
+            <Form onSubmit={handleSubmit} className="  row g-3">
+              <FormGroup className="col-md-3">
+                <FormLabel htmlFor="cep">Cep</FormLabel>
+                <FormControl
+                  type="text"
                   id="cep"
                   name="cep"
+                  maxLength={8}
+                  value={farmData.cep}
+                  onChange={handleChange}
+                  onBlur={(e) => buscarEndereco(e.target.value)}
+
                   required
                 />
-              </div>
-              <div className="mb-4 md:col-span-3 col-span-4">
-                <label className="block text-sm font-medium text-gray-700" htmlFor="lagradouro">
-                  Lagradouro
-                </label>
-                <input
-                  className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+              </FormGroup>
+              <FormGroup className="col-md-9">
+                <FormLabel htmlFor="logradouro">Logradouro</FormLabel>
+                <FormControl
                   type="text"
-                  id="lagradouro"
-                  name="lagradouro"
+                  id="logradouro"
+                  name="logradouro"
+                  value={farmData.logradouro}
+                  onChange={handleChange}
+
                   required
                 />
-              </div>
-              <div className="mb-4 col-span-2 md:col-span-1">
-                <label className="block text-sm font-medium text-gray-700" htmlFor="lagradouroNumero">
-                  Número
-                </label>
-                <input
-                  className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+              </FormGroup>
+              <FormGroup className="col-md-3">
+                <FormLabel htmlFor="lagradouroNumero">Número</FormLabel>
+                <FormControl
                   type="text"
-                  id="lagradouroNumero"
-                  name="lagradouroNumero"
+                  id="logradouroNumero"
+                  name="logradouroNumero"
+                  value={farmData.logradouroNumero}
+                  onChange={handleChange}
                   required
                 />
-              </div>
-              <div className="mb-4 md:col-span-3 col-span-2">
-                <label className="block text-sm font-medium text-gray-700" htmlFor="bairro">
-                  Bairro
-                </label>
-                <input
-                  className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+              </FormGroup>
+              <FormGroup className="col-md-9">
+                <FormLabel htmlFor="bairro">Bairro</FormLabel>
+                <FormControl
                   type="text"
                   id="bairro"
                   name="bairro"
+                  value={farmData.bairro}
+                  onChange={handleChange}
                   required
                 />
-              </div>
-              <div className="mb-4 col-span-4">
-                <label className="block text-sm font-medium text-gray-700" htmlFor="complemento">
-                  Complemento
-                </label>
-                <input
-                  className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+              </FormGroup>
+              <FormGroup className="col-12">
+                <FormLabel htmlFor="complemento">Complemento</FormLabel>
+                <FormControl
                   type="text"
                   id="complemento"
                   name="complemento"
+                  value={farmData.complemento}
+                  onChange={handleChange}
                 />
-              </div>
-              <div className="mb-4 md:col-span-3 col-span-2">
-                <label className="block text-sm font-medium text-gray-700" htmlFor="cidade">
-                  Cidade
-                </label>
-                <input
-                  className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+              </FormGroup>
+              <FormGroup className="col-md-9">
+                <FormLabel htmlFor="cidade">Cidade</FormLabel>
+                <FormControl
                   type="text"
                   id="cidade"
                   name="cidade"
+                  value={farmData.cidade}
+                  onChange={handleChange}
                   required
                 />
-              </div>
-              <div className="mb-4 md:col-span-1 col-span-2">
-                <label className="block text-sm font-medium text-gray-700" htmlFor="estado">
-                  Estado
-                </label>
-                <input
-                  className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+              </FormGroup>
+              <FormGroup className="col-md-3">
+                <FormLabel htmlFor="estado">Estado</FormLabel>
+                <FormControl
                   type="text"
                   id="estado"
                   name="estado"
+                  value={farmData.estado}
+                  onChange={handleChange}
                   required
                 />
+              </FormGroup>
+              <FormGroup className="col-md-6">
+                <FormLabel htmlFor="latitude">Latitude</FormLabel>
+                <FormControl
+                  type="text"
+                  id="latitude"
+                  name="latitude"
+                  value={farmData.latitude}
+                  onChange={handleChange}
+                  required
+                />
+              </FormGroup>
+              <FormGroup className="col-md-6">
+                <FormLabel htmlFor="longitude">Longitude</FormLabel>
+                <FormControl
+                  type="text"
+                  id="longitude"
+                  name="longitude"
+                  value={farmData.longitude}
+                  onChange={handleChange}
+                  required
+                />
+              </FormGroup>
+              <div className="col-12">
+                <Button className='bg-orange-500 border-0 hover:bg-orange-600 flex w-1/2 justify-center mx-auto  py-1 px-2 rounded-lg  text-white' type='submit'>
+                  Registrar
+                </Button>
               </div>
-              <button className='bg-orange-500 hover:bg-orange-600 py-1 px-2 col-span-4 rounded-3xl text-white -mt-2' type='submit'>Registrar</button>
-            </form>
-            <div className='flex justify-start mt-8'><span onClick={handleClick} className='text-sm flex bg-slate-50 px-3 py-1 rounded-3xl shadow-md  mx-auto md:mx-0 items-center cursor-pointer hover:bg-slate-100'><FiChevronsLeft className='mr-2 ' />Dados da Farmacia</span></div>
+              <div className='flex justify-start mt-8'><span onClick={handleClick} className='text-sm flex bg-slate-50 px-3 py-1 rounded-3xl shadow-md  mx-auto md:mx-0 items-center cursor-pointer hover:bg-slate-100'><FiChevronsLeft className='mr-2 ' />Dados da Farmacia</span></div>
+            </Form>
+
           </div>
         </div>
       </div>
