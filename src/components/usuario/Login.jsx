@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { useAuthState } from '../../contexts/userContext/useAuthHooks';
+import { useAuthState } from '../../contexts/userContext/useAuth';
+import { Container, Row, Col, Card, Form, Button, Alert } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Login = () => {
     const {loginUser, updateUserData, userData } = useAuthState();
@@ -7,66 +9,63 @@ const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const user = await loginUser({ email: userData.email, password: userData.password });
-        if (!user) {
-            setErro('Senha deve ter 8 caracteres');
+        const user = await loginUser(userData);
+        console.log(user);
+        if (user === null) {
+          setErro('Senha fora dos requisitos');
         } else {
-            setErro('');             
+          setErro('');             
         }
-    };
+      };
+      
+    
 
     return (
-        <div className="flex items-center justify-center h-screen bg-gray-200">
-            <div className={`bg-white w-96 p-8 rounded-lg shadow-lg`}>
-                <h1 className="md:text-2xl font-bold text-center text-gray-700">Faça seu login</h1>
-
-                <form onSubmit={handleSubmit}>
-                    <div className="mb-4">
-                        <label htmlFor="email" className="block text-gray-600 font-bold mb-2">
-                            Email
-                        </label>
-                        <input
-                            type="email"
-                            id="email"
-                            name="email"
-                            className="w-full border border-gray-300 p-2 rounded-lg"
-                            value={userData.email}
-                            onChange={(e) => updateUserData("email", e.target.value)}
-                            placeholder="Digite seu Email"
-                            required
-                            autoComplete="email"
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <label htmlFor="password" className="block text-gray-600 font-bold mb-2">
-                            Senha
-                        </label>
-                        <input
-                            type="password"
-                            id="password"
-                            name="password"
-                            className="w-full border border-gray-300 p-2 rounded-lg"
-                            value={userData.password}
-                            onChange={(e) => updateUserData("password", e.target.value)}
-                            placeholder="Digite sua senha"
-                            required
-                            autoComplete="current-password"
-                        />
-                    </div>
-                    {erro && (
-                        <p className="text-red-500 font-semibold md:text-base text-sm mb-4">{erro}</p>
-                    )}
-                    <button
-                        type="submit"
-                        className="w-full rounded-3xl bg-orange-500 hover:bg-orange-600 px-6 py-2 text-xl font-medium uppercase text-white"
-                    >
-                        Entrar
-                    </button>
-                </form>
-
-            </div>
-        </div>
-    );
+        <Container className="h-100 my-6">
+        <Row className="h-100 justify-content-center align-items-center">
+            <Col xs={12} md={6} lg={4}>
+                <Card>
+                    <Card.Body>
+                        <Card.Title className="text-center mb-3">Faça seu login</Card.Title>
+                        <Form onSubmit={handleSubmit}>
+                            <Form.Group className="mb-3" controlId="email">
+                                <Form.Label>Email</Form.Label>
+                                <Form.Control
+                                    type="email"
+                                    name="email"
+                                    value={userData.email}
+                                    onChange={(e) => updateUserData("email", e.target.value)}
+                                    placeholder="Digite seu Email"
+                                    required
+                                    autoComplete="email"
+                                />
+                            </Form.Group>
+                            <Form.Group className="mb-3" controlId="password">
+                                <Form.Label>Senha</Form.Label>
+                                <Form.Control
+                                    type="password"
+                                    name="password"
+                                    value={userData.password}
+                                    onChange={(e) => updateUserData("password", e.target.value)}
+                                    placeholder="Digite sua senha"
+                                    required
+                                    autoComplete="current-password"
+                                />
+                            </Form.Group>
+                            {erro && (
+                                <Alert variant="danger" className="mb-3">{erro}</Alert>
+                            )}
+                            <Button variant="warning" type="submit" className="w-100 text-uppercase">
+                                Entrar
+                            </Button>
+                        </Form>
+                    </Card.Body>
+                </Card>
+            </Col>
+        </Row>
+    </Container>
+);
 };
+    
 
 export default Login;
