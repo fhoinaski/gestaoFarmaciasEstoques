@@ -24,7 +24,7 @@ export const AuthProvider = ({ children }) => {
             setIsAuthenticated(true);
             localStorage.setItem("user", JSON.stringify(user));
             //redireciona o usuario após login com sucesso
-            navigate('/');
+            navigate('/farmacias/cadastrar');
             return user;
         } else {
             setIsAuthenticated(false);
@@ -50,6 +50,8 @@ export const AuthProvider = ({ children }) => {
         setUserData({ ...userData, [name]: value });
     };
 
+    
+
     const value = {
         isAuthenticated,
         userData,
@@ -57,7 +59,8 @@ export const AuthProvider = ({ children }) => {
         logoutUser,
         validaPassword,
         updateUserData,
-    };
+        
+    };    
 
     return (
         <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
