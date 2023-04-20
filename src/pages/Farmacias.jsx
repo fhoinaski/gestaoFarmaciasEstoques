@@ -1,50 +1,32 @@
 import React, { useEffect, useState } from 'react';
-import { FaWhatsapp } from 'react-icons/fa';
 import InfoModal from '../components/InfoModal';
-import { Table, Button } from 'react-bootstrap';
+import { Table } from 'react-bootstrap';
 import MapaFarmacia from '../components/MapaFarmacia';
+import { FarmaciaRow } from '../components/TabelaFarmacia';
+import { useFarmaciaState } from '../contexts/farmaciaContext/useFarmacia';
+import Carregando from '../components/Carregando';
+
 
 const Farmacias = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [pharmacy, setPharmacy] = useState(null);
-  const [allFarmacias, setAllFarmacias] = useState([]);
-
-  useEffect(() => {
-    const storedFarmacias = JSON.parse(localStorage.getItem("farmacias")) || [];
-    setAllFarmacias(storedFarmacias);
-  }, []);
+  const [detalheFarmaia, setDetalheFarmacia] = useState(null);
+  const { todasFarmacias, carregando } = useFarmaciaState();
 
   const mostrarFarmacia = (cnpj) => {
-    const farmacia = allFarmacias.find((f) => f.cnpj === cnpj);
+    const farmacia = todasFarmacias.find((dadosFarmacia) => dadosFarmacia.cnpj === cnpj);
     setIsOpen(true);
-    setPharmacy(farmacia);
+    setDetalheFarmacia(farmacia);
   };
-  console.log(allFarmacias);
-
-  const positions = allFarmacias
-    .map((farmacia) => {
-      const latitude = parseFloat(farmacia.latitude);
-      const longitude = parseFloat(farmacia.longitude);
-
-      if (isNaN(latitude) || isNaN(longitude)) {
-        return null;
-      }
-
-      return {
-        latitude,
-        longitude,
-        farmacia: farmacia,
-        
-      };
-    })
-    .filter((position) => position !== null);
-
-  console.log(positions);
-
 
   return (
     <div className="w-11/12 mx-auto my-10">
-      <InfoModal isOpen={isOpen} onClose={() => setIsOpen(false)} farmacia={pharmacy} />
+      <InfoModal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        objetoInfo={detalheFarmaia}
+        titulo={`Informações da Farmácia ${detalheFarmaia?.nomeFantasia}`}
+      />
+
       <Table striped bordered hover>
         <thead>
           <tr>
@@ -55,24 +37,24 @@ const Farmacias = () => {
           </tr>
         </thead>
         <tbody>
-          {allFarmacias.map((farmacia, index) => (
-            <tr key={farmacia.cnpj}>
-              <td>{farmacia.razaoSocial}</td>
-              <td>{farmacia.bairro}</td>
-              <td>{farmacia.telefone}</td>
-              <td>
-                <Button variant="outline-primary" onClick={() => mostrarFarmacia(farmacia.cnpj)}>
-                  <FaWhatsapp size={20} className="mr-2" />
-                  Mostrar todas informações
-                </Button>
-              </td>
-            </tr>
+          {todasFarmacias.map((farmacia) => (
+            <FarmaciaRow
+              key={farmacia.cnpj}
+              farmacia={farmacia}
+              onClick={() => mostrarFarmacia(farmacia.cnpj)}
+            />
           ))}
         </tbody>
       </Table>
-      <div className='flex mx-auto' style={{ height: '400px', width: '550px' }}>
-      <MapaFarmacia positions={positions} />
-      </div>
+      {carregando ? (
+        <div className='h-96 flex items-center justify-center'>
+          <Carregando />
+        </div>
+      ) : (
+        <div className='flex mx-auto' style={{ height: '300px', width: '100%' }}>
+          <MapaFarmacia farmacias={todasFarmacias} onMapLoad={() => setCarregando(false)} />
+        </div>
+      )}
     </div>
   );
 };
