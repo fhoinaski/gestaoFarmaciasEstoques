@@ -1,28 +1,70 @@
 import React, { useState } from 'react';
 import SuccessoModal from '../components/SucessoModal';
 import { useMedicamentoState } from '../contexts/medicamentoContext/useMedicamento';
+import AlertModal from '../components/AlertModal';
 
 
 const CadastroMedicamento = () => {
-  const [erro, setErro] = useState('');
   const [cadastroSucesso, setCadastroSucesso] = useState(false);
-  const { medicamento, updateMedicData, registerMedic, verificaCamposObrigatorios } = useMedicamentoState();
+  const { medicamento, updateMedicData, registrarMedicamento } = useMedicamentoState();
+  const [alertaAberto, setAlertaAberto] = useState(false);
+  const [textoAlert, setTextoAlert] = useState('');
+  const [valor, setValor] = useState('R$ ');
+  const [valorFormatado, setValorFormatado] = useState('');
+
+  const formatarValor = (valor) => {
+    // Regex para extrair números, pontos e vírgulas
+    const regex = /[\d.,]+/g; 
+    const valorNumerico = valor.match(regex);
+
+    if (!valorNumerico) {
+      return '';
+    }
+    // Substitui a vírgula por um ponto
+    const valorString = valorNumerico.join('').replace(',', '.');
+    // Converte o valor extraído para número
+    const numero = parseFloat(valorString);
+
+
+    return new Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+    }).format(numero);
+  };
+  const handleFocus = (e) => {
+    if (e.target.value === '') {
+      setValor('R$ ');
+      updateMedicData(e.target.name, 'R$ ');
+    }
+  };
+
+  const handleBlur = (e) => {
+    if (e.target.name === 'precoUnitario') {
+      const valorFormatado = formatarValor(e.target.value);
+      updateMedicData(e.target.name, valorFormatado);
+    }
+  };
+
   const handleChange = (e) => {
     updateMedicData(e.target.name, e.target.value);
+
+
   };
 
   const handleSubmi = (e) => {
     e.preventDefault();
-    const novoMedicamento= registerMedic(medicamento);
-    if (verificaCamposObrigatorios()) {
-      registerMedic(medicamento);
-      setCadastroSucesso(true);
-    } else {
-      setErro('Preencha todos os campos obrigatórios');
-    }
-    if (!novoMedicamento) {
-      alert("Já cadastrado");
-    }
+    
+      const novoMedicamento = registrarMedicamento(medicamento);
+      if (novoMedicamento) {
+        setCadastroSucesso(true);
+      } if (!novoMedicamento) {
+        setAlertaAberto(true);
+        setTextoAlert('Medicamento já cadastrado');
+      }else {
+        setAlertaAberto(true);
+        setTextoAlert('Preencha todos os campos obrigatórios');
+        } 
+
   };
 
 
@@ -31,7 +73,19 @@ const CadastroMedicamento = () => {
     <div className="min-h-screen bg-gray-100 py-6 flex flex-col justify-center sm:py-12">
 
       <div className="relative py-3 sm:max-w-xl md:max-w-2xl lg:max-w-3xl xl:max-w-4xl 2xl:max-w-5xl sm:mx-auto">
-        <SuccessoModal isOpen={cadastroSucesso} onClose={() => setCadastroSucesso(false)} />
+        <AlertModal
+          aberto={alertaAberto}
+          textoMensagem={textoAlert}
+          fechar={() => setAlertaAberto(false)}
+
+        />
+        <SuccessoModal
+          isOpen={cadastroSucesso}
+          linkConsulta="/medicamentos"
+          linkNovoCadastro="/medicamentos/cadastrar" textoBody='Medicamento cadastrado com sucesso'
+          textoTitulo='Registro de Medicamento'
+          onClose={() => setCadastroSucesso(false)}
+        />
 
         <div className="absolute inset-0 bg-gradient-to-r from-orange-400 to-orange-600 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl"></div>
         <div
@@ -48,7 +102,7 @@ const CadastroMedicamento = () => {
                   Nome Medicamento
                 </label>
                 <input
-                  className="mt-1 block w-full py-2 border border-gray-300 rounded-md"
+                  className="input-mask"
                   type="text"
                   id="nomeMedicamento"
                   name="nomeMedicamento"
@@ -62,7 +116,7 @@ const CadastroMedicamento = () => {
                   Nome Laboratorio
                 </label>
                 <input
-                  className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                  className="input-mask"
                   type="text"
                   id="nomeLaboratorio"
                   name="nomeLaboratorio"
@@ -76,7 +130,7 @@ const CadastroMedicamento = () => {
                   Dosagem Medicamento
                 </label>
                 <input
-                  className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                  className="input-mask"
                   type="text"
                   id="dosagemMedicamento"
                   name="dosagemMedicamento"
@@ -90,12 +144,14 @@ const CadastroMedicamento = () => {
                   Preço Unitário
                 </label>
                 <input
-                  className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                  className="input-mask"
                   type="text"
                   id="precoUnitario"
                   name="precoUnitario"
                   value={medicamento.precoUnitario}
                   onChange={handleChange}
+                  onBlur={handleBlur}
+                  onFocus={handleFocus}
                   required
                 />
               </div>
@@ -122,7 +178,7 @@ const CadastroMedicamento = () => {
                   Descriçao Medicamento
                 </label>
                 <textarea
-                  className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+                  className="input-mask"
                   id="descricaoMedicamento"
                   name="descricaoMedicamento"
                   value={medicamento.descricaoMedicamento}
