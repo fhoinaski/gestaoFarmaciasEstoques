@@ -38,11 +38,12 @@ const MapaFarmacia = ({ farmacias, zoom = 10 }) => {
 
   return (
     <>
-   <MapContainer center={center} zoom={zoom} style={{ height: '300px', width: '100%', zIndex: 0 }} >
+   <MapContainer center={center} zoom={zoom} style={{ height: '500px', width: '100%', zIndex: 0 }} >
 
-      <TileLayer        
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      />
+   <TileLayer
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution="Map data &copy; <a href=&quot;https://www.openstreetmap.org/&quot;>OpenStreetMap</a> contributors"
+        />
       {positions.map(({latitude, longitude, farmacia}, index) => (
   <Marker key={index} position={[latitude, longitude]}>
     <Popup>

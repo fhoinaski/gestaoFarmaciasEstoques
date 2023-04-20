@@ -51,7 +51,7 @@ const Farmacias = () => {
           <Carregando />
         </div>
       ) : (
-        <div className='flex mx-auto' style={{ height: '300px', width: '100%' }}>
+        <div className='flex mx-auto' style={{ height: '500px', width: '100%' }}>
           <MapaFarmacia farmacias={todasFarmacias} onMapLoad={() => setCarregando(false)} />
         </div>
       )}
