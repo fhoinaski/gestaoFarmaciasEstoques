@@ -16,15 +16,15 @@ const Medicamentos = () => {
   useEffect(() => {
     let medicamentosFiltradosPorBusca = todosMedicamentos;
   
-    // if (searchValue) {
-    //   medicamentosFiltradosPorBusca = medicamentosFiltradosPorBusca.filter((medicamento) =>
-    //     medicamento.nomeMedicamento.toLowerCase().includes(searchValue.toLowerCase())
-    //   );
-    // }
-
-    if (selectedOption === 'todos') {
+    if (searchValue) {
+      medicamentosFiltradosPorBusca = medicamentosFiltradosPorBusca.filter((medicamento) =>
+        medicamento.nomeMedicamento.toLowerCase().includes(searchValue.toLowerCase())
+      );
+    }
+  
+    if (selectedOption === 'Todos') {
       medicamentosFiltradosPorBusca = medicamentosFiltradosPorBusca;
-    } else if (selectedOption === 'controlado') {
+    } else if (selectedOption === 'Controlado') {
       medicamentosFiltradosPorBusca = medicamentosFiltradosPorBusca.filter((medicamento) =>
         medicamento.tipoMedicamento === 'Controlado'
       );
@@ -34,8 +34,10 @@ const Medicamentos = () => {
       );
     }
   
+    // Atualize o estado com os medicamentos filtrados
     setMedicamentosFiltrados(medicamentosFiltradosPorBusca);
-  }, [searchValue, selectedOption, todosMedicamentos]);
+  }, [todosMedicamentos, searchValue, selectedOption]); // Adicione as dependências necessárias
+  
   
   
 
