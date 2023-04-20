@@ -4,9 +4,12 @@ module.exports = {
   theme: {
     extend: {
       fontSize: {
-        'xxs': '0.65rem',}
+        'xxs': '0.65rem',
+      },
+      paddingBottom: {
+        '100': '450px',
+      },
     },
   },
   plugins: [],
-  
-}
+};
