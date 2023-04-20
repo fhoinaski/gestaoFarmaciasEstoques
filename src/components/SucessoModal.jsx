@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
-const SucessoModal = ({ isOpen, onClose }) => {
+const SucessoModal = ({ isOpen, onClose,linkConsulta,linkNovoCadastro,textoBody,textoTitulo}) => {
   return (
     <div
       className={`fixed z-10 inset-0 overflow-y-auto ${isOpen ? 'block' : 'hidden'}`}
@@ -56,14 +57,14 @@ const SucessoModal = ({ isOpen, onClose }) => {
           </div>
 
           <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-            <p className="text-lg">Nova cadastro feito com sucesso!</p>
+            <p className="text-lg">{textoTitulo}</p>
             <p className="text-gray-500 mt-2 text-sm">
-              Uma nova Fármacia esta cadatsrada no sistema.
+              {textoBody}
             </p>
           </div>
 
           <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex items-center justify-center sm:flex-row-reverse">
-            <Link to="/farmacias">
+          <Link to={linkConsulta}> 
               <button
                 type="button"
                 className="w-full inline-flex justify-center rounded-md border my-3 border-transparent shadow-sm px-4 py-2 bg-orange-300 text-base font-medium text-white hover:bg-orange-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm"
@@ -72,7 +73,8 @@ const SucessoModal = ({ isOpen, onClose }) => {
                 Consultar
               </button>
             </Link>
-            <Link to="/farmacias/cadastrar">
+            <Link to={linkNovoCadastro}> 
+
                 <button
                   type="button"
                   className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-orange-300 text-base font-medium text-white hover:bg-orange-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm"
@@ -86,6 +88,14 @@ const SucessoModal = ({ isOpen, onClose }) => {
       </div>
     </div>
   );
+};
+SucessoModal.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  linkConsulta: PropTypes.string.isRequired,
+  linkNovoCadastro: PropTypes.string.isRequired,
+  textoBody: PropTypes.string.isRequired,
+  textoTitulo: PropTypes.string.isRequired,
 };
 
 export default SucessoModal;
