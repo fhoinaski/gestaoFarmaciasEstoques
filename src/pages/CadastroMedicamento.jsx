@@ -10,7 +10,7 @@ const CadastroMedicamento = () => {
   const [alertaAberto, setAlertaAberto] = useState(false);
   const [textoAlert, setTextoAlert] = useState('');
   const [valor, setValor] = useState('R$ ');
-  const [valorFormatado, setValorFormatado] = useState('');
+ 
 
   const formatarValor = (valor) => {
     // Regex para extrair números, pontos e vírgulas
@@ -60,10 +60,7 @@ const CadastroMedicamento = () => {
       } if (!novoMedicamento) {
         setAlertaAberto(true);
         setTextoAlert('Medicamento já cadastrado');
-      }else {
-        setAlertaAberto(true);
-        setTextoAlert('Preencha todos os campos obrigatórios');
-        } 
+      }
 
   };
 
