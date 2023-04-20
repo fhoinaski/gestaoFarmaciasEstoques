@@ -1,6 +1,6 @@
 import React from 'react';
 
-const InfoModal = ({ isOpen, onClose, farmacia }) => {
+const InfoModal = ({ isOpen, onClose, titulo, objetoInfo }) => {
   return (
     <>
       {isOpen && (
@@ -46,39 +46,30 @@ const InfoModal = ({ isOpen, onClose, farmacia }) => {
                     className="text-lg leading-6 font-medium text-gray-900"
                     id="modal-headline"
                   >
-                    {farmacia.nomeFantasia}
+                    {titulo}
                   </h3>
                   <div className="mt-2">
-                    <p className="text-sm text-gray-500">
-                      Razão Social: {farmacia.razaoSocial}
-                    </p>
-                    <p className="text-sm text-gray-500">
-                      CNPJ: {farmacia.cnpj}
-                    </p>
-                    <p className="text-sm text-gray-500">
-                      Email: {farmacia.email}
-                    </p>
-                    <p className="text-sm text-gray-500">
-                      Telefone: {farmacia.telefone}
-                    </p>
-                    <p className="text-sm text-gray-500">
-                      Celular: {farmacia.celular}
-                    </p>
-                    <p className="text-sm text-gray-500">
-                      CEP: {farmacia.cep}
-                    </p>
-                    <p className="text-sm text-gray-500">
-                      Logradouro: {farmacia.logradouro} {farmacia.logradouroNumero}
-                    </p>
-                    <p className="text-sm text-gray-500">
-                      Bairro: {farmacia.bairro}
-                    </p>
-                    <p className="text-sm text-gray-500">
-                      Cidade: {farmacia.cidade}
-                    </p>
-                    <p className="text-sm text-gray-500">
-                      Estado: {farmacia.estado}
-                    </p>
+                    {Object.keys(objetoInfo)
+                      .filter((key) => {
+                        const val = objetoInfo[key];
+                        return (
+                          val !== undefined &&
+                          val !== null &&
+                          val !== '' &&
+                          key !== 'latitude' &&
+                          key !== 'longitude'&&
+                          key !== 'id'
+                        );
+                      })
+                      .map((key, index) => {
+                        const val = objetoInfo[key];
+                        return (
+                          <p key={index} className="text-sm text-gray-500">
+                            {key}: {val}
+                          </p>
+                        );
+                      })}
+
                   </div>
                 </div>
               </div>
