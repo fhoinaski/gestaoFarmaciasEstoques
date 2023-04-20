@@ -1,145 +1,164 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
+import { buscarEndereco } from "../../services/BuscaEndereco";
 
 
 const FarmaciaContext = createContext();
 export { FarmaciaContext }
 export const FarmaciaProvider = ({ children }) => {
 
+  const [todasFarmacias, setTodasFarmacias] = useState([]);
+  const [carregando, setCarregando] = useState(true);
+  const [farmData, setFarmData] = useState({
+    razaoSocial: '',
+    cnpj: '',
+    nomeFantasia: '',
+    email: '',
+    telefone: '',
+    celular: '',
+    cep: '',
+    logradouroNumero: '',
+    logradouro: '',
+    bairro: '',
+    complemento: '',
+    cidade: '',
+    estado: '',
+    latitude: '',
+    longitude: ''
+  });
 
-    const [farmData, setFarmData] = useState({
-        razaoSocial: '',
-        cnpj: '',
-        nomeFantasia: '',
-        email: '',
-        telefone: '',
-        celular: '',
-        cep: '',
-        logradouroNumero: '',
-        logradouro: '',
-        bairro: '',
-        complemento: '',
-        cidade: '',
-        estado: '',
-        latitude: '',
-        longitude: ''
-    });
-    
 
-    const updateFarmData = (name, value) => {
-        setFarmData({ ...farmData, [name]: value });
+
+  //carrega as farmacias do localstorage quando o componente é montado 
+  useEffect(() => {
+    const fetchStoredFarmacias = () => {
+      return JSON.parse(localStorage.getItem("farmacias")) || [];
     };
+    const farmacias = fetchStoredFarmacias();
+    setTodasFarmacias(farmacias);
 
-    const registerFarmacia = (farmacia) => {
-      const { razaoSocial, cnpj, nomeFantasia, email, telefone, celular, cep, logradouro, logradouroNumero, bairro, complemento, cidade, estado, latitude, longitude } = farmacia;
-  
-      const storegFarmacias = JSON.parse(localStorage.getItem("farmacias")) || [];
-      const cnpjJaCadastrado = storegFarmacias.some(farmacia => farmacia.cnpj === cnpj);
-  
-      // Verifica se o CNPJ já está cadastrado no localStorage e retorna null
-      if (cnpjJaCadastrado) {
-        return null;
-      } else {
-        const newFarmacia = { razaoSocial, cnpj, nomeFantasia, email, telefone, celular, cep, logradouro, logradouroNumero, bairro, complemento, cidade, estado, latitude, longitude};
-        storegFarmacias.push(newFarmacia);
-        localStorage.setItem("farmacias", JSON.stringify(storegFarmacias));
-        return newFarmacia;
-      }
-  };
-  
+    const exibirMapa = () => setCarregando(false);
+    // espera alguns 1 segundo para exibir o mapa
+    setTimeout(exibirMapa, 1000);
+  }, []);
 
-    const verificaCamposObrigatorios = () => {
-        const camposObrigatorio = [
-          "razaoSocial",
-          "cnpj",
-          "nomeFantasia",
-          "email",
-          "telefone",
-          "celular",
-          "cep",
-          "logradouro",
-          "logradouroNumero",
-          "bairro",
-          "cidade",
-          "estado",
-          "latitude",
-          "longitude"
-        ];        
-      
-        return camposObrigatorio.every((campo) => Boolean(farmData[campo]));
-      };
 
-      const buscarEndereco = async (cep) => {
-        console.log(cep);
-        try {
-          const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
-
-      
-          const data = await response.json();
-      
-          if (data.erro) {
-            throw new Error('CEP não encontrado.');
-          }
-      
-          const enderecoCompleto = `${data.logradouro}, ${data.bairro}, ${data.localidade}, ${data.uf}, ${data.cep}, Brasil`;
-          const geolocalizacao = await buscarGeolocalizacao(enderecoCompleto);
-      
-          setFarmData(prevState => ({
-            ...prevState,
-            logradouro: data.logradouro,
-            bairro: data.bairro,
-            cidade: data.localidade,
-            estado: data.uf,
-            latitude: geolocalizacao.latitude,
-            longitude: geolocalizacao.longitude,
-          }));
-        } catch (error) {
-          console.error(error.message);
-        }
-        
-      };
-      
-      
-
-      const buscarGeolocalizacao = async (enderecoCompleto) => {
-        console.log(enderecoCompleto);
-        try {
-          const url = `https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&q=${encodeURIComponent(enderecoCompleto)}&limit=1`;
-      
-          const response = await fetch(url);
-          if (response.ok) {
-            const data = await response.json();
-            if (data.length > 0) {
-              const latitude = data[0].lat;
-              const longitude = data[0].lon;
-              return { latitude, longitude };
-            } else {
-              throw new Error("Endereço não encontrado.");
-            }
-          } else {
-            throw new Error("Erro ao obter dados da API Nominatim.");
-          }
-        } catch (error) {
-          console.error("Erro ao obter geolocalização:", error);
-        }
-      };
-      
-          
-      
-      
-
-    const value = {
-        farmData,
-        updateFarmData,
-        registerFarmacia,
-        verificaCamposObrigatorios,
-        buscarEndereco,
-        buscarGeolocalizacao,
-  
-
+  //função que busca o endereço e atualiza o estado
+  const buscarAtualizarEndereco = async (cep) => {
+    const enderecoData = await buscarEndereco(cep);
+    if (enderecoData) {
+      setFarmData((prevState) => ({
+        ...prevState,
+        ...enderecoData,
+      }));
     }
-    return (
-        <FarmaciaContext.Provider value={value}>
-            {children}
-        </FarmaciaContext.Provider>
-    )
+  };
+
+
+  const updateFarmData = (e) => {
+    const { name, value } = e.target;
+    setFarmData({ ...farmData, [name]: value });
+  };
+
+
+  //função responsavel para cadastrar a farmacia
+  const registerFarmacia = (farmacia) => {
+    const {
+      razaoSocial,
+      cnpj,
+      nomeFantasia,
+      email,
+      telefone,
+      celular,
+      cep,
+      logradouro,
+      logradouroNumero,
+      bairro,
+      complemento,
+      cidade,
+      estado,
+      latitude,
+      longitude } = farmacia;
+
+    const storegFarmacias = JSON.parse(localStorage.getItem("farmacias")) || [];
+
+    // verifica se o cnpj informado já está cadastrado
+    const cnpjJaCadastrado = storegFarmacias.some(farmacia => farmacia.cnpj === cnpj);
+
+    // se o cnpj já estiver cadastrado, retorna null para informar que o cnpj já está registrado
+    if (cnpjJaCadastrado) {
+      return null;
+
+      // Caso cnpj não esteja cadastrado, cria um novo objeto com os dados da farmácia
+    } else {
+      const newFarmacia = {
+        razaoSocial,
+        cnpj,
+        nomeFantasia,
+        email,
+        telefone,
+        celular,
+        cep,
+        logradouro,
+        logradouroNumero,
+        bairro,
+        complemento,
+        cidade,
+        estado,
+        latitude,
+        longitude
+      };
+      // Adiciona o novo objeto ao array de farmácias armazenadas 
+      storegFarmacias.push(newFarmacia);
+
+      // Atualiza o estado todasFarmacias
+      setTodasFarmacias([...storegFarmacias]);
+
+      // Atualiza o localStorage com o novo array de farmácias com a nova farmácia
+      localStorage.setItem("farmacias", JSON.stringify(storegFarmacias));
+
+      return newFarmacia;
+    }
+  };
+
+
+  //codigo responsavel por verificar se os campos obrigatorios foram preenchidos
+
+  const nomeFormLabel = {
+    razaoSocial: "Razão Social",
+    cnpj: "CNPJ",
+    nomeFantasia: "Nome Fantasia",
+    email: "Email",
+    telefone: "Telefone",
+    celular: "Celular",
+    cep: "CEP",
+    logradouro: "Logradouro",
+    logradouroNumero: "Número do Logradouro",
+    bairro: "Bairro",
+    cidade: "Cidade",
+    estado: "Estado",
+    latitude: "Latitude",
+    longitude: "Longitude"
+  };
+
+  const verificaCamposObrigatorios = () => {
+    const campoNaoPreenchido = Object.keys(nomeFormLabel).find((campo) => !Boolean(farmData[campo]));
+    return campoNaoPreenchido ? nomeFormLabel[campoNaoPreenchido] : null;
+  };
+
+
+  const value = {
+    farmData,
+    updateFarmData,
+    registerFarmacia,
+    verificaCamposObrigatorios,
+    todasFarmacias,
+    buscarAtualizarEndereco,
+    carregando
+
+  }
+  return (
+    <FarmaciaContext.Provider value={value}>
+      {children}
+    </FarmaciaContext.Provider>
+  )
 }
