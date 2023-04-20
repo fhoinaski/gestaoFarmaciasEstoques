@@ -2,47 +2,43 @@ import React, { useState } from 'react';
 import { FiChevronsRight, FiChevronsLeft } from "react-icons/fi";
 import { useFarmaciaState } from '../contexts/farmaciaContext/useFarmacia';
 import SuccessoModal from '../components/SucessoModal';
-import { Container, Row, Col, Form, FormGroup, FormLabel, FormControl, Alert, Button } from 'react-bootstrap';
+import { Container, Row, Col, Form, FormGroup, FormLabel, FormControl, Button } from 'react-bootstrap';
 import InputMask from 'react-input-mask';
-
-
-
+import AlertModal from '../components/AlertModal';
 
 
 const CadastroFarmacia = () => {
   const [isFlipped, setIsFlipped] = useState(false);
   const [cadastroSucesso, setCadastroSucesso] = useState(false);
+  const [alertaAberto, setAlertaAberto] = useState(false);
+  const [textoAlert , setTextoAlert] = useState('');
 
-  const { farmData, updateFarmData, registerFarmacia, verificaCamposObrigatorios, buscarEndereco } = useFarmaciaState();
+  const { farmData, updateFarmData, registerFarmacia, verificaCamposObrigatorios,buscarAtualizarEndereco} = useFarmaciaState();
 
   // gira o card
   const handleClick = () => {
     setIsFlipped(!isFlipped);
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    updateFarmData(name, value);
-  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    if (verificaCamposObrigatorios()) {
+    
+    const campoNaoPreenchido = verificaCamposObrigatorios();
+    if (campoNaoPreenchido) {
+      setAlertaAberto(true);
+      setTextoAlert(`Preencha o campo obrigatório: ${campoNaoPreenchido}`);
+    } else {
       const farmacia = registerFarmacia(farmData);
       if (farmacia) {
         setCadastroSucesso(true);
-        console.log(farmacia);
       } else {
-        alert("Erro ao cadastrar farmácia.");
+        setAlertaAberto(true);
+        setTextoAlert('CNPJ já cadastrado');
       }
-    } else {
-      alert("Por favor, preencha todos os campos obrigatórios.");
     }
   };
-
-
-
+  
   return (
 
 
@@ -50,11 +46,23 @@ const CadastroFarmacia = () => {
 
       
       <div className="relative py-3 sm:max-w-xl md:max-w-2xl lg:max-w-3xl xl:max-w-4xl 2xl:max-w-5xl sm:mx-auto">
-        <SuccessoModal isOpen={cadastroSucesso} onClose={() => setCadastroSucesso(false)} />
+      <AlertModal 
+        aberto={alertaAberto}
+        textoMensagem={textoAlert}
+        fechar={() => setAlertaAberto(false)}  
+        />
+        <SuccessoModal 
+        isOpen={cadastroSucesso} 
+        linkConsulta="/farmacias" 
+        linkNovoCadastro="/farmacias/cadastrar" 
+        textoBody='Farmácia cadastrado com sucesso' 
+        textoTitulo='Registro de Farmácia'  
+        onClose={() => setCadastroSucesso(false) } 
+        />
         <div className="absolute inset-0 bg-gradient-to-r from-orange-400 to-orange-600 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl"></div>
         <div
-          className={`bg-white shadow-lg sm:rounded-3xl md:-pb-10 sm:p-20 px-4 md:px-10 transform ${isFlipped ? "pb-64 md:pb-36" : "py-4"
-            } transition-all duration-1000 ease-in-out`}
+          className={`bg-white shadow-lg sm:rounded-3xl md:-pb-10 sm:p-20 px-4 md:px-10 transform ${isFlipped ? "pb-96 pt-16 sm:pb-72 md:pb-36" : "py-4"
+            } transition-all duration-700 ease-in-out`}
           style={{
             transformStyle: 'preserve-3d',
             perspective: '1000px',
@@ -76,7 +84,7 @@ const CadastroFarmacia = () => {
                         name="razaoSocial"
                         id="razaoSocial"
                         value={farmData.razaoSocial}
-                        onChange={handleChange}
+                        onChange={updateFarmData}
                         required
                       />
                     </FormGroup>
@@ -90,7 +98,7 @@ const CadastroFarmacia = () => {
                         name="cnpj"
                         id="cnpj"
                         value={farmData.cnpj}
-                        onChange={handleChange}
+                        onChange={updateFarmData}
                         required
                       />
                     </FormGroup>
@@ -103,7 +111,7 @@ const CadastroFarmacia = () => {
                         name="nomeFantasia"
                         id="nomeFantasia"
                         value={farmData.nomeFantasia}
-                        onChange={handleChange}
+                        onChange={updateFarmData}
                         required
                       />
                     </FormGroup>
@@ -116,7 +124,7 @@ const CadastroFarmacia = () => {
                         name="email"
                         id="email"
                         value={farmData.email}
-                        onChange={handleChange}
+                        onChange={updateFarmData}
                         required
                       />
                     </FormGroup>
@@ -130,7 +138,7 @@ const CadastroFarmacia = () => {
                         name="telefone"
                         id="telefone"
                         value={farmData.telefone}
-                        onChange={handleChange}
+                        onChange={updateFarmData}
                         required
                       />
                     </FormGroup>
@@ -144,7 +152,7 @@ const CadastroFarmacia = () => {
                         name="celular"
                         id="celular"
                         value={farmData.celular}
-                        onChange={handleChange}
+                        onChange={updateFarmData}
                         required
                       />
                     </FormGroup>
@@ -155,8 +163,8 @@ const CadastroFarmacia = () => {
             <div className='flex justify-end mt-5'><span onClick={handleClick} className='text-sm flex bg-slate-50 px-3 py-1 rounded-3xl shadow-md  mx-auto md:mx-0 items-center cursor-pointer hover:bg-slate-100'>Endereço da Farmacia<FiChevronsRight className='ml-2 ' /></span></div>
           </div>
           <div
-            className={`w-full h-full absolute top-10 md:top-10 left-0 md:py-0 px-4 ${isFlipped ? 'opacity-100' : 'opacity-0'} transition-opacity`}
-            style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)', transitionDuration: '1500ms' }}
+            className={`w-full h-full absolute top-10 md:top-10 left-0 md:py-0 px-4 ${isFlipped ? 'opacity-100' : 'opacity-0 '} transition-opacity duration-1000`}
+            style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
 
           >
 
@@ -170,8 +178,8 @@ const CadastroFarmacia = () => {
                   name="cep"
                   maxLength={8}
                   value={farmData.cep}
-                  onChange={handleChange}
-                  onBlur={(e) => buscarEndereco(e.target.value)}
+                  onChange={updateFarmData}
+                  onBlur={(e) => buscarAtualizarEndereco(e.target.value)}
 
                   required
                 />
@@ -183,7 +191,7 @@ const CadastroFarmacia = () => {
                   id="logradouro"
                   name="logradouro"
                   value={farmData.logradouro}
-                  onChange={handleChange}
+                  onChange={updateFarmData}
 
                   required
                 />
@@ -195,7 +203,7 @@ const CadastroFarmacia = () => {
                   id="logradouroNumero"
                   name="logradouroNumero"
                   value={farmData.logradouroNumero}
-                  onChange={handleChange}
+                  onChange={updateFarmData}
                   required
                 />
               </FormGroup>
@@ -206,7 +214,7 @@ const CadastroFarmacia = () => {
                   id="bairro"
                   name="bairro"
                   value={farmData.bairro}
-                  onChange={handleChange}
+                  onChange={updateFarmData}
                   required
                 />
               </FormGroup>
@@ -217,7 +225,7 @@ const CadastroFarmacia = () => {
                   id="complemento"
                   name="complemento"
                   value={farmData.complemento}
-                  onChange={handleChange}
+                  onChange={updateFarmData}
                 />
               </FormGroup>
               <FormGroup className="col-md-9">
@@ -227,7 +235,7 @@ const CadastroFarmacia = () => {
                   id="cidade"
                   name="cidade"
                   value={farmData.cidade}
-                  onChange={handleChange}
+                  onChange={updateFarmData}
                   required
                 />
               </FormGroup>
@@ -238,7 +246,7 @@ const CadastroFarmacia = () => {
                   id="estado"
                   name="estado"
                   value={farmData.estado}
-                  onChange={handleChange}
+                  onChange={updateFarmData}
                   required
                 />
               </FormGroup>
@@ -249,7 +257,7 @@ const CadastroFarmacia = () => {
                   id="latitude"
                   name="latitude"
                   value={farmData.latitude}
-                  onChange={handleChange}
+                  onChange={updateFarmData}
                   required
                 />
               </FormGroup>
@@ -260,7 +268,7 @@ const CadastroFarmacia = () => {
                   id="longitude"
                   name="longitude"
                   value={farmData.longitude}
-                  onChange={handleChange}
+                  onChange={updateFarmData}
                   required
                 />
               </FormGroup>
