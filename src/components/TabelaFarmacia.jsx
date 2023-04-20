@@ -1,17 +1,19 @@
-import { Button } from "react-bootstrap";
-import { FaWhatsapp } from "react-icons/fa";
+
+import { BsInfoCircle } from "react-icons/bs";
 
 export const FarmaciaRow = ({ farmacia, onClick }) => {
     return(
-    <tr key={farmacia.cnpj}>
-      <td>{farmacia.razaoSocial}</td>
-      <td>{farmacia.bairro}</td>
+    <tr key={farmacia.cnpj} className="text-xs items-center" >
+      <td >{farmacia.razaoSocial}</td>
+      <td >{farmacia.bairro}</td>
       <td>{farmacia.telefone}</td>
       <td>
-        <Button variant="outline-primary" onClick={onClick}>
-          <FaWhatsapp size={20} className="mr-2" />
-          Mostrar todas informações
-        </Button>
+   
+          <div className="flex w-full justify-center  " onClick={onClick}>
+            <BsInfoCircle className="h-auto w-7 p-1 cursor-pointer border-x  border-orange-500 rounded-full hover:text-orange-700 hover:w-8 " />
+            
+          </div>
+    
       </td>
     </tr>
   );
