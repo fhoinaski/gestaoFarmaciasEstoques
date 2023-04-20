@@ -1,0 +1,94 @@
+{"medicamentos":[
+    {
+        "id": 100,
+        "nomeMedicamento": "Paracetamol",
+        "nomeLaboratorio": "Medley",
+        "dosagemMedicamento": "500mg",
+        "descricaoMedicamento": "O Paracetamol é um analgésico e antitérmico com efeito rápido e seguro. É indicado para aliviar dores de cabeça, cólicas menstruais, dores musculares e articulares, além de ajudar a reduzir a febre. Sua fórmula é leve e pode ser utilizado por pessoas de todas as idades.",
+        "precoUnitario": "R$ 5,99",
+        "tipoMedicamento": "comum"
+      },
+      {
+        "id": 101,
+        "nomeMedicamento": "Dipirona Sódica",
+        "nomeLaboratorio": "Eurofarma",
+        "dosagemMedicamento": "500mg",
+        "descricaoMedicamento": "A Dipirona Sódica é um analgésico e antitérmico eficiente, utilizado para aliviar dores de cabeça, enxaquecas, cólicas menstruais e dores musculares. Além disso, é capaz de reduzir a febre rapidamente. Seu efeito começa a ser sentido após poucos minutos de ingestão.",
+        "precoUnitario": "R$ 3,49",
+        "tipoMedicamento": "controlado"
+      },
+      {
+        "id": 102,
+        "nomeMedicamento": "Omeprazol",
+        "nomeLaboratorio": "EMS",
+        "dosagemMedicamento": "20mg",
+        "descricaoMedicamento": "O Omeprazol é um medicamento indicado para tratar problemas gastrointestinais, como úlceras estomacais, refluxo gastroesofágico e gastrite. Ele age reduzindo a produção de ácido no estômago e aliviando os sintomas. É um medicamento de uso prolongado e seguro.",
+        "precoUnitario": "R$ 12,99",
+        "tipoMedicamento": "controlado"
+      },
+      {
+        "id": 103,
+        "nomeMedicamento": "Clonazepam",
+        "nomeLaboratorio": "Biosintética",
+        "dosagemMedicamento": "2mg",
+        "descricaoMedicamento": "O Clonazepam é um medicamento ansiolítico e anticonvulsivante, utilizado para tratar transtornos de ansiedade, síndrome do pânico, epilepsia e outras condições. Ele age no sistema nervoso central, reduzindo a ansiedade e prevenindo convulsões. É um medicamento controlado e deve ser utilizado com orientação médica.",
+        "precoUnitario": "R$ 19,99",
+        "tipoMedicamento": "controlado"
+      },
+      {
+        "id": 104,
+        "nomeMedicamento": "Losartana Potássica",
+        "nomeLaboratorio": "Sandoz",
+        "dosagemMedicamento": "50mg",
+        "descricaoMedicamento": "A Losartana Potássica é um medicamento utilizado para tratar a hipertensão arterial, insuficiência cardíaca e reduzir o risco de acidente vascular cerebral (AVC) em pacientes com hipertensão e hipertrofia ventricular esquerda. Atua relaxando os vasos sanguíneos, facilitando a circulação e diminuindo a pressão arterial.",
+        "precoUnitario": "R$ 14,99",
+        "tipoMedicamento": "comum"
+        },
+        {
+        "id": 105,
+        "nomeMedicamento": "Amoxicilina",
+        "nomeLaboratorio": "Aché",
+        "dosagemMedicamento": "500mg",
+        "descricaoMedicamento": "A Amoxicilina é um antibiótico de amplo espectro, utilizado para tratar infecções bacterianas, como infecções do trato respiratório, urinário, cutâneas e outras. Age inibindo a síntese da parede celular das bactérias, eliminando-as do organismo. Deve ser utilizado sob prescrição médica.",
+        "precoUnitario": "R$ 16,99",
+        "tipoMedicamento": "comum"
+        },
+        {
+        "id": 106,
+        "nomeMedicamento": "Ibuprofeno",
+        "nomeLaboratorio": "Medley",
+        "dosagemMedicamento": "600mg",
+        "descricaoMedicamento": "O Ibuprofeno é um anti-inflamatório, analgésico e antitérmico, utilizado para aliviar dores de cabeça, febre, cólicas menstruais, dores musculares e articulares. Atua inibindo a produção de prostaglandinas, substâncias responsáveis pela inflamação, dor e febre. Pode ser utilizado por adultos e crianças acima de 12 anos.",
+        "precoUnitario": "R$ 8,99",
+        "tipoMedicamento": "comum"
+        },
+        {
+        "id": 107,
+        "nomeMedicamento": "Metformina",
+        "nomeLaboratorio": "EMS",
+        "dosagemMedicamento": "850mg",
+        "descricaoMedicamento": "A Metformina é um medicamento antidiabético oral, utilizado para tratar o diabetes mellitus tipo 2. Atua diminuindo a produção de glicose no fígado e aumentando a sensibilidade à insulina, melhorando o controle dos níveis de açúcar no sangue. Deve ser utilizado com orientação médica e acompanhamento de uma dieta equilibrada.",
+        "precoUnitario": "R$ 17,99",
+        "tipoMedicamento": "comum"
+        },
+        {
+        "id": 108,
+        "nomeMedicamento": "Atorvastatina",
+        "nomeLaboratorio": "Eurofarma",
+        "dosagemMedicamento": "20mg",
+        "descricaoMedicamento": "A Atorvastatina é um medicamento utilizado para tratar hipercolesterolemia e prevenir doenças do coração",
+        "precoUnitario": "R$ 17,99",
+        "tipoMedicamento": "comum"
+        },
+        {
+        "id": 109,
+        "nomeMedicamento": "Sinvastatina",
+        "nomeLaboratorio": "EMS",
+        "dosagemMedicamento": "20mg",
+        "descricaoMedicamento": "A Sinvastatina é um medicamento utilizado para tratar hipercolesterolemia e prevenir doenças do coração",
+        "precoUnitario": "R$ 17,99",
+        "tipoMedicamento": "comum"
+
+        }
+
+]}
