@@ -1,8 +1,14 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 
 const MedicamentoContext = createContext();
 export { MedicamentoContext }
 export const MedicamentoProvider = ({ children }) => {
+
+
+  const [todosMedicamentos, setTodosMedicamentos] = useState([]);
+  const [carregando, setCarregando] = useState(true);
+
+
 
   const [medicamento, setMedicamento] = useState({
     id: 1,
@@ -14,20 +20,29 @@ export const MedicamentoProvider = ({ children }) => {
     tipoMedicamento: '',
   });
 
+  useEffect(() => {
+    const fetchStoredMedicamentos = () => {
+      return JSON.parse(localStorage.getItem("medicamentos")) || [];
+    };
+    const medicamentos = fetchStoredMedicamentos();
+    setTodosMedicamentos(medicamentos);
+  
+    const exibirDados = () => setCarregando(false);
+    // espera 1 segundo para exibir os dados
+    setTimeout(exibirDados, 1000);
+  }, []);
+
+
+ 
+
+
   const updateMedicData = (name, value) => {
     setMedicamento({ ...medicamento, [name]: value });
   };
 
-  const getStoredMedicamentos = () => JSON.parse(localStorage.getItem("medicamentos")) || [];
 
-  const saveStoredMedicamentos = (medicamentos) => localStorage.setItem("medicamentos", JSON.stringify(medicamentos));
 
-  const getNextId = (storedMedicamentos) => {
-    const ultimoId = storedMedicamentos.length > 0 ? storedMedicamentos[storedMedicamentos.length - 1].id : 0;
-    return ultimoId + 1;
-  };
-
-  const registerMedic = (medicamento) => {
+  const registrarMedicamento = (medicamento) => {
     const { nomeMedicamento, nomeLaboratorio, dosagemMedicamento, descricaoMedicamento, precoUnitario, tipoMedicamento } = medicamento;
   
     const storedMedicamentos = JSON.parse(localStorage.getItem("medicamentos")) || [];
@@ -49,30 +64,22 @@ export const MedicamentoProvider = ({ children }) => {
         tipoMedicamento 
       };
       storedMedicamentos.push(newMedicamento);
+       // Atualiza o estado todasFarmacias
+       setTodosMedicamentos([...storedMedicamentos]);
+
       localStorage.setItem("medicamentos", JSON.stringify(storedMedicamentos));
       return newMedicamento;
     }
   };
   
 
-  const camposObrigatorio = [
-    'nomeMedicamento',
-    'nomeLaboratorio',
-    'dosagemMedicamento',
-    'descricaoMedicamento',
-    'precoUnitario',
-    'tipoMedicamento',
-  ];
-
-  const verificaCamposObrigatorios = () => {
-    return camposObrigatorio.every((campo) => Boolean(medicamento[campo]));
-  };
-
   const value = {
     medicamento,
     updateMedicData,
-    registerMedic,
-    verificaCamposObrigatorios,
+    registrarMedicamento,
+    todosMedicamentos,
+    carregando,
+
   }
 
   return (
