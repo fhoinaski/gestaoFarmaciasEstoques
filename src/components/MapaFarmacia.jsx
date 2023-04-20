@@ -1,13 +1,33 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 
 
-const MapaFarmacia = ({ positions, zoom = 10 }) => {
+const MapaFarmacia = ({ farmacias, zoom = 10 }) => {
+
+//recebe as farmacias e retorna um array com as posições mapeia e filtrando as posições que não são nulas e retorna um array com as posições
+//que não são nulas 
+  const positions = farmacias.map((farmacia) => {
+    const latitude = parseFloat(farmacia.latitude);
+    const longitude = parseFloat(farmacia.longitude);
+
+    if (isNaN(latitude) || isNaN(longitude)) {
+      return null;
+    }
+
+    return {
+      latitude,
+      longitude,
+      farmacia: farmacia,
+    };
+  })
+  .filter((position) => position !== null);
+
+
 
 
   if (!positions || positions.length === 0) {
-    return <div>Carregando mapa...</div>;
+    return <div className='flex justify-center text-center w-full my-5 text-orange-500 font-semibold'>Sem dados disponiveis aguarde ...</div>;
   }
 
   const center = {
@@ -18,10 +38,9 @@ const MapaFarmacia = ({ positions, zoom = 10 }) => {
 
   return (
     <>
-   <MapContainer center={center} zoom={zoom} style={{ height: '100%', width: '100%', zIndex: 0 }} >
+   <MapContainer center={center} zoom={zoom} style={{ height: '300px', width: '100%', zIndex: 0 }} >
 
-      <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      <TileLayer        
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       {positions.map(({latitude, longitude, farmacia}, index) => (
