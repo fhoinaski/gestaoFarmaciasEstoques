@@ -27,16 +27,16 @@ const Farmacias = () => {
         titulo={`Informações da Farmácia ${detalheFarmaia?.nomeFantasia}`}
       />
 
-      <Table striped bordered hover>
+      <Table striped bordered hover className='text-center'>
         <thead>
-          <tr>
+          <tr >
             <th>Nome Fantasia</th>
             <th>Bairro</th>
             <th>Telefone</th>
             <th>Ações</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className='flex-col items-center justify-center '>
           {todasFarmacias.map((farmacia) => (
             <FarmaciaRow
               key={farmacia.cnpj}
