@@ -9,34 +9,31 @@ const Medicamentos = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [detalheMedicamento, setDetalheMedicamento] = useState(null);
   const { todosMedicamentos, carregando } = useMedicamentoState();
-  const [searchValue, setSearchValue] = useState('');
+  const [valorBuscado, setValorBuscado] = useState('');
   const [medicamentosFiltrados, setMedicamentosFiltrados] = useState([]);
   const [selectedOption, setSelectedOption] = useState('todos');
 
   useEffect(() => {
     let medicamentosFiltradosPorBusca = todosMedicamentos;
   
-    if (searchValue) {
-      medicamentosFiltradosPorBusca = medicamentosFiltradosPorBusca.filter((medicamento) =>
-        medicamento.nomeMedicamento.toLowerCase().includes(searchValue.toLowerCase())
-      );
-    }
+    medicamentosFiltradosPorBusca = valorBuscado
+      ? medicamentosFiltradosPorBusca.filter((medicamento) =>
+          medicamento.nomeMedicamento.toLowerCase().includes(valorBuscado.toLowerCase())
+        )
+      : medicamentosFiltradosPorBusca;
   
-    if (selectedOption === 'Todos') {
-      medicamentosFiltradosPorBusca = medicamentosFiltradosPorBusca;
-    } else if (selectedOption === 'Controlado') {
-      medicamentosFiltradosPorBusca = medicamentosFiltradosPorBusca.filter((medicamento) =>
-        medicamento.tipoMedicamento === 'Controlado'
-      );
-    } else {
-      medicamentosFiltradosPorBusca = medicamentosFiltradosPorBusca.filter((medicamento) =>
-        medicamento.tipoMedicamento === 'Comum'
-      );
-    }
+    medicamentosFiltradosPorBusca = medicamentosFiltradosPorBusca.filter((medicamento) =>
+      selectedOption === 'todos'
+        ? medicamento.tipoMedicamento === 'Comum' || medicamento.tipoMedicamento === 'Controlado'
+        : selectedOption === 'Controlado'
+        ? medicamento.tipoMedicamento === 'Controlado'
+        : medicamento.tipoMedicamento === 'Comum'
+    );
   
     // Atualize o estado com os medicamentos filtrados
     setMedicamentosFiltrados(medicamentosFiltradosPorBusca);
-  }, [todosMedicamentos, searchValue, selectedOption]); // Adicione as dependências necessárias
+  }, [todosMedicamentos, valorBuscado, selectedOption]); // Adicione as dependências necessárias
+  
   
   
   
