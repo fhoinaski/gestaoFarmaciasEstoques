@@ -8,6 +8,8 @@ export const MedicamentoProvider = ({ children }) => {
 
   const [todosMedicamentos, setTodosMedicamentos] = useState([]);
   const [carregando, setCarregando] = useState(true);
+  //criado para executar o useEffect quando o usuário cadastrar um novo medicamento
+  const [atualizarLista, setAtualizarLista] = useState(false);
 
 
 
@@ -35,7 +37,7 @@ export const MedicamentoProvider = ({ children }) => {
     const exibirDados = () => setCarregando(false);
     // espera 1 segundo para exibir os dados
     setTimeout(exibirDados, 1000);
-  }, [todosMedicamentos]);
+  }, [atualizarLista]);
 
 
  
@@ -70,7 +72,8 @@ export const MedicamentoProvider = ({ children }) => {
       };
       storedMedicamentos.push(newMedicamento);
        // Atualiza o estado todasFarmacias
-       setTodosMedicamentos([...storedMedicamentos]);
+      //  setTodosMedicamentos([...storedMedicamentos]);
+      setAtualizarLista(!atualizarLista);
 
       localStorage.setItem("medicamentos", JSON.stringify(storedMedicamentos));
       return newMedicamento;

@@ -9,6 +9,11 @@ export const FarmaciaProvider = ({ children }) => {
 
   const [todasFarmacias, setTodasFarmacias] = useState([]);
   const [carregando, setCarregando] = useState(true);
+
+  //criado para executar o useEffect quando o usuário cadastrar um novo medicamento
+  const [atualizarLista, setAtualizarLista] = useState(false);
+
+
   const [farmData, setFarmData] = useState({
     razaoSocial: '',
     cnpj: '',
@@ -43,7 +48,7 @@ export const FarmaciaProvider = ({ children }) => {
     const exibirMapa = () => setCarregando(false);
     // espera 1 segundo para exibir o mapa
     setTimeout(exibirMapa, 1000);
-  }, [todasFarmacias]);
+  }, [atualizarLista]);
 
 
   //função que busca o endereço e atualiza o estado
@@ -115,7 +120,7 @@ export const FarmaciaProvider = ({ children }) => {
       storegFarmacias.push(newFarmacia);
 
       // Atualiza o estado todasFarmacias
-      setTodasFarmacias([...storegFarmacias]);
+      setAtualizarLista(!atualizarLista);
 
       // Atualiza o localStorage com o novo array de farmácias com a nova farmácia
       localStorage.setItem("farmacias", JSON.stringify(storegFarmacias));
