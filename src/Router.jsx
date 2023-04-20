@@ -1,4 +1,8 @@
-import { Outlet, createBrowserRouter } from "react-router-dom";
+// import { Outlet, createBrowserRouter } from "react-router-dom";
+import { Outlet, Routes, Route, BrowserRouter } from "react-router-dom";
+
+
+
 import App from "./App";
 import { Home } from "./pages/Home";
 import Login from "./components/usuario/Login";
@@ -26,37 +30,21 @@ const MedicamentoOutlet = () => {
   );
 };
 
-export const AppRouter = createBrowserRouter([
-  {
-    path: "/",
-    element: <App />,
-    children: [
-      { path: "/", element: <Home /> },
-      { path: "/login", element: <Login /> },
-      {
-        path: "/farmacias",
-        element: (
-          <PrivateRoute>
-            <FarmaciaOutlet />
-          </PrivateRoute>
-        ),
-        children: [
-          { path: "", element: <Farmacias /> },
-          { path: "cadastrar", element: <CadastroFarmacia /> },
-        ],
-      },
-      {
-        path: "/medicamentos",
-        element: (
-          <PrivateRoute>
-            <MedicamentoOutlet />
-          </PrivateRoute>
-        ),
-        children: [
-          { path: "", element: <Medicamentos /> },
-          { path: "cadastrar", element: <CadastroMedicamento /> },
-        ],
-      },
-    ],
-  },
-]);
+export const AppRouter = () => (
+  <BrowserRouter>
+    <Routes>
+      <Route path="/" element={<App />}>
+        <Route index element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/farmacias" element={<PrivateRoute><FarmaciaOutlet /></PrivateRoute>}>
+          <Route index element={<Farmacias />} />
+          <Route path="cadastrar" element={<CadastroFarmacia />} />
+        </Route>
+        <Route path="/medicamentos" element={<PrivateRoute><MedicamentoOutlet /></PrivateRoute>}>
+          <Route index element={<Medicamentos />} />
+          <Route path="cadastrar" element={<CadastroMedicamento />} />
+        </Route>
+      </Route>
+    </Routes>
+  </BrowserRouter>
+);

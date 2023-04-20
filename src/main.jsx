@@ -5,6 +5,5 @@ import { AppRouter } from './Router';
 import './index.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-ReactDOM.createRoot(document.getElementById("root")).render(
-  <RouterProvider router={AppRouter} />
-);
+ReactDOM.createRoot(document.getElementById("root")).render(<AppRouter />);
+
