@@ -1,4 +1,5 @@
 import { createContext, useEffect, useState } from "react";
+import medicamentosData from '../../medicamentos.json';
 
 const MedicamentoContext = createContext();
 export { MedicamentoContext }
@@ -25,12 +26,16 @@ export const MedicamentoProvider = ({ children }) => {
       return JSON.parse(localStorage.getItem("medicamentos")) || [];
     };
     const medicamentos = fetchStoredMedicamentos();
-    setTodosMedicamentos(medicamentos);
+   
+    // Mescla as farmácias do localStorage com as farmácias do arquivo JSON
+      const medicamentosJuntos = [...medicamentos, ...medicamentosData.medicamentos];
+      
+      setTodosMedicamentos(medicamentosJuntos);
   
     const exibirDados = () => setCarregando(false);
     // espera 1 segundo para exibir os dados
     setTimeout(exibirDados, 1000);
-  }, []);
+  }, [todosMedicamentos]);
 
 
  

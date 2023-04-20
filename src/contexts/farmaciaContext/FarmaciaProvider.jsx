@@ -1,5 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import { buscarEndereco } from "../../services/BuscaEndereco";
+import farmaciasData from '../../farmacias.json';
 
 
 const FarmaciaContext = createContext();
@@ -28,18 +29,21 @@ export const FarmaciaProvider = ({ children }) => {
 
 
 
-  //carrega as farmacias do localstorage quando o componente é montado 
   useEffect(() => {
     const fetchStoredFarmacias = () => {
       return JSON.parse(localStorage.getItem("farmacias")) || [];
     };
+    
     const farmacias = fetchStoredFarmacias();
-    setTodasFarmacias(farmacias);
+
+    // Mescla as farmácias do localStorage com as farmácias do arquivo JSON
+    const juntarFarmacias = [...farmacias, ...farmaciasData.farmacias];
+    setTodasFarmacias(juntarFarmacias);
 
     const exibirMapa = () => setCarregando(false);
-    // espera alguns 1 segundo para exibir o mapa
+    // espera 1 segundo para exibir o mapa
     setTimeout(exibirMapa, 1000);
-  }, []);
+  }, [todasFarmacias]);
 
 
   //função que busca o endereço e atualiza o estado
