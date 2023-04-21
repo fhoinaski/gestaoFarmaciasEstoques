@@ -1,8 +1,9 @@
 import React from 'react';
+import {BsFacebook, BsInstagram, BsTwitter} from 'react-icons/bs';
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-400 text-white py-8">
+    <footer className="bg-gray-300 text-orange-500 py-8">
       <div className="container mx-auto flex flex-wrap justify-center">
         <div className="w-full lg:w-6/12 px-4">
           <h4 className="text-3xl font-semibold">LABPharmacy Inc.</h4>
@@ -10,25 +11,10 @@ const Footer = () => {
           Conectando Saúde e Bem-Estar: Seu Sistema de Farmácias Centralizado.
           </h5>
           <h6 className='text-sm mt-5'>Pharmacy Central System - Gerenciamento simplificado de farmácias e medicamentos para melhorar a saúde e o bem-estar.</h6>
-          <div className="mt-6">
-            <button
-              className="bg-white text-gray-800 shadow-lg font-normal h-10 w-10 items-center justify-center align-center rounded-full outline-none focus:outline-none mr-2"
-              type="button"
-            >
-              <i className="fab fa-twitter"></i>
-            </button>
-            <button
-              className="bg-white text-gray-800 shadow-lg font-normal h-10 w-10 items-center justify-center align-center rounded-full outline-none focus:outline-none mr-2"
-              type="button"
-            >
-              <i className="fab fa-facebook-square"></i>
-            </button>
-            <button
-              className="bg-white text-gray-800 shadow-lg font-normal h-10 w-10 items-center justify-center align-center rounded-full outline-none focus:outline-none mr-2"
-              type="button"
-            >
-              <i className="fab fa-instagram"></i>
-            </button>
+          <div className="mt-6 flex gap-4">
+          <BsFacebook className='text-blue-500 w-10 h-7 cursor-pointer'/>
+          <BsInstagram className='text-rose-600 w-10 cursor-pointer h-7'/>
+          <BsTwitter className='text-blue-700 w-10 cursor-pointer h-7'/>
           </div>
         </div>
       </div>
