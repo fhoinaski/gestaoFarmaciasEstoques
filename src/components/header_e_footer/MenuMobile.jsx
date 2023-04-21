@@ -52,7 +52,7 @@ const MenuMobile = ({ aberto, abrirModal, menu }) => {
         onClick={() => abrirModal(false)}
       ></div>
       <div
-        className={`fixed left-0 top-0 bottom-2/4 bg-white w-full shadow-lg z-50 transform transition-all 
+        className={`fixed left-0 top-0 bottom-1/3 bg-white w-full shadow-lg z-50 transform transition-all 
         duration-500 ${aberto ? 'translate-x-0' : '-translate-x-full'}`}
       >
         <div className='flex w-full justify-end p-2 '>
