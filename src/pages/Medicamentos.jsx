@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import CardProdutos from '../components/CardProdutos';
 import Carregando from '../components/Carregando';
 import { useMedicamentoState } from '../contexts/medicamentoContext/useMedicamento';
-import InfoModal from '../components/InfoModal';
+
 import SelectOption from '../components/SelectOption';
 
 const Medicamentos = () => {

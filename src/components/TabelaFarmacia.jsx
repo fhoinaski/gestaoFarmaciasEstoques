@@ -1,7 +1,7 @@
 
 import { BsInfoCircle } from "react-icons/bs";
 
-export const FarmaciaRow = ({ farmacia, onClick }) => {
+export const TabelaFarmacia = ({ farmacia, onClick }) => {
     return(
     <tr key={farmacia.cnpj} className="text-xs items-center" >
       <td >{farmacia.razaoSocial}</td>

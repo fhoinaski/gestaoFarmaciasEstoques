@@ -1,12 +1,21 @@
 import React from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
+import L from 'leaflet';
+import { MdAddLocationAlt } from 'react-icons/md';
+import ReactDOMServer from 'react-dom/server';
 
+const PharmacyIcon = L.divIcon({
+  className: 'custom-icon',
+  html: ReactDOMServer.renderToString(<MdAddLocationAlt size={30} className='text-orange-400 hover:text-orange-600' />),
+  iconSize: [30, 30],
+  iconAnchor: [15, 15],
+  popupAnchor: [0, -15],
+});
 
 const MapaFarmacia = ({ farmacias, zoom = 10 }) => {
 
-//recebe as farmacias e retorna um array com as posições mapeia e filtrando as posições que não são nulas e retorna um array com as posições
-//que não são nulas 
+
   const positions = farmacias.map((farmacia) => {
     const latitude = parseFloat(farmacia.latitude);
     const longitude = parseFloat(farmacia.longitude);
@@ -45,7 +54,7 @@ const MapaFarmacia = ({ farmacias, zoom = 10 }) => {
           attribution="Map data &copy; <a href=&quot;https://www.openstreetmap.org/&quot;>OpenStreetMap</a> contributors"
         />
       {positions.map(({latitude, longitude, farmacia}, index) => (
-  <Marker key={index} position={[latitude, longitude]}>
+  <Marker key={index} position={[latitude, longitude]} icon={PharmacyIcon}>
     <Popup>
       <span className='font-extrabold text-orange-600 flex justify-center'>{farmacia.razaoSocial}</span>
       <br />

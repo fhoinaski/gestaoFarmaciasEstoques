@@ -1,4 +1,3 @@
-// src/PrivateRoute.jsx
 import { Navigate, useLocation } from "react-router-dom";
 import {useAuthState}  from "./contexts/userContext/useAuth";
 

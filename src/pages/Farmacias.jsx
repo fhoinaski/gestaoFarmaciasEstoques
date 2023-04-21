@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import InfoModal from '../components/InfoModal';
+import React, { useState } from 'react';
+import FarmaciaModal from '../components/FarmaciaModal';
 import { Table } from 'react-bootstrap';
 import MapaFarmacia from '../components/MapaFarmacia';
-import { FarmaciaRow } from '../components/TabelaFarmacia';
+import { TabelaFarmacia } from '../components/TabelaFarmacia';
 import { useFarmaciaState } from '../contexts/farmaciaContext/useFarmacia';
 import Carregando from '../components/Carregando';
 
@@ -20,11 +20,11 @@ const Farmacias = () => {
 
   return (
     <div className="w-11/12 mx-auto my-10">
-      <InfoModal
+      <FarmaciaModal
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
         objetoInfo={detalheFarmaia}
-        titulo={`Informações da Farmácia ${detalheFarmaia?.nomeFantasia}`}
+        titulo={detalheFarmaia?.nomeFantasia}
       />
 
       <Table striped bordered hover className='text-center'>
@@ -33,12 +33,12 @@ const Farmacias = () => {
             <th>Nome Fantasia</th>
             <th>Bairro</th>
             <th>Telefone</th>
-            <th>Ações</th>
+            <th>Detalhes</th>
           </tr>
         </thead>
         <tbody className='flex-col items-center justify-center '>
           {todasFarmacias.map((farmacia) => (
-            <FarmaciaRow
+            <TabelaFarmacia
               key={farmacia.cnpj}
               farmacia={farmacia}
               onClick={() => mostrarFarmacia(farmacia.cnpj)}
