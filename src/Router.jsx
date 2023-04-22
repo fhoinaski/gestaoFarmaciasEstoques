@@ -13,6 +13,7 @@ import CadastroMedicamento from "./pages/CadastroMedicamento";
 import Medicamentos from "./pages/Medicamentos";
 import Farmacias from "./pages/Farmacias";
 import PrivateRoute from "./PrivateRoute"; 
+import NovoUsuario from "./components/usuario/NovoUsuario";
 
 const FarmaciaOutlet = () => {
   return (
@@ -36,6 +37,7 @@ export const AppRouter = () => (
       <Route path="/" element={<App />}>
         <Route index element={<Home />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/registrar" element={<NovoUsuario />} />
         <Route path="/farmacias" element={<PrivateRoute><FarmaciaOutlet /></PrivateRoute>}>
           <Route index element={<Farmacias />} />
           <Route path="cadastrar" element={<CadastroFarmacia />} />
