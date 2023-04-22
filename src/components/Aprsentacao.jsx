@@ -21,7 +21,7 @@ const Apresentacao = () => {
           <div className="md:w-1/2 md:px-4">
             <h2 className="text-4xl text-orange-500 font-bold mb-4 text-center">Bem vindo a LabPharmacy System</h2>
             <p className="mb-4">
-            Uma plataforma inovadora e otimizada para a gestão holística de farmácias e medicamentos, com foco na promoção da saúde e no aprimoramento do bem-estar geral da comunidade.
+            Uma plataforma inovadora e otimizada para a gestão de farmácias e medicamentos, com foco na promoção da saúde e no aprimoramento do bem-estar geral da comunidade.
             </p>
             <Link to={isAuthenticated ? "/farmacias" : "/login"} className='flex justify-center m-10'>
                 <button
