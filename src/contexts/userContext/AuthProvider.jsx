@@ -14,33 +14,69 @@ export const AuthProvider = ({ children }) => {
         password: '',
     });
 
-    // Define o estado inicial de isAuthenticated com base no valor armazenado no localStorage, caso contrário, será falso.
     const initialAuthState = JSON.parse(localStorage.getItem('isAuthenticated')) || false;
     const [isAuthenticated, setIsAuthenticated] = useState(initialAuthState);
+    const inicialRegistroUsuario = JSON.parse(localStorage.getItem('registroUsuario')) || [];
+    const [registroUsuario, setRegistroUsuario] = useState(inicialRegistroUsuario);
 
     // Atualiza o valor de 'isAuthenticated' no localStorage sempre que ele mudar.
     useEffect(() => {
         localStorage.setItem('isAuthenticated', JSON.stringify(isAuthenticated));
     }, [isAuthenticated]);
 
+
+    const registrarUsuario = async ({ nome, email, senha }) => {
+        const novoUsuario = {
+          nome,
+          email,
+          senha,
+        };
+      
+        try {
+          const atualizarRegistroUsuario = [...registroUsuario, novoUsuario];
+          setRegistroUsuario(atualizarRegistroUsuario);
+          localStorage.setItem('registroUsuario', JSON.stringify(atualizarRegistroUsuario));
+          setIsAuthenticated(true);
+        //   navigate('/');
+          return true; 
+        } catch (error) {
+          console.error('Erro ao registrar usuário', error);
+          return false; 
+        }
+      };
+      
+
+
+
     // Função para autenticar o usuário.
     const loginUser = async ({ email, password }) => {
         const user = {
-            email,
-            password,
+          email,
+          password,
         };
-
-        // Verifica se a senha é válida e, em caso afirmativo, autentica o usuário, armazena os dados do usuário e redireciona para a página desejada.
-        if (validatePassword(password)) {
-            setIsAuthenticated(true);
-            localStorage.setItem("user", JSON.stringify(user));
-            navigate('/farmacias/cadastrar');
-            return user;
-        } else {
-            setIsAuthenticated(false);
-            return null;
+    
+        // Verifica se o usuário existe nos usuários cadastrados.
+        const existingUser = registroUsuario.find(
+          (registroUsuario) => registroUsuario.email === email
+        );
+      
+        if (!existingUser) {
+          setIsAuthenticated(false);
+          return { error: 'E-mail não encontrado.' };
         }
-    };
+      
+        if (existingUser.senha !== password) {
+          setIsAuthenticated(false);
+          return { error: 'Senha incorreta.' };
+        }
+      
+        setIsAuthenticated(true);
+        localStorage.setItem("user", JSON.stringify(user));
+        navigate('/farmacias/cadastrar');
+        return user;
+      };
+      
+
 
     // Função para deslogar o usuário, removendo os dados do usuário do localStorage e redirecionando para a página inicial.
     const logoutUser = () => {
@@ -50,9 +86,9 @@ export const AuthProvider = ({ children }) => {
     };
 
     // Função para validar a senha com base em uma expressão regular.
-    const validatePassword = (password) => {
+    const validarSenha = (senha) => {
         const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
-        return regex.test(password);
+        return regex.test(senha);
     };
 
     // Função para atualizar os dados do usuário no estado userData.
@@ -65,8 +101,9 @@ export const AuthProvider = ({ children }) => {
         userData,
         loginUser,
         logoutUser,
-        validatePassword,
+        validarSenha,
         updateUserData,
+        registrarUsuario
     };
 
     return (
