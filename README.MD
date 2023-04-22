@@ -2,6 +2,12 @@
 ![Logo](https://raw.githubusercontent.com/fhoinaski/projetoAvaliativoModulo1/develop/public/logo.png?token=GHSAT0AAAAAAB6KQPLFJPTHNY7BYNTTYQ52ZCDEFZA)
 
 
+## 🔗 Link do Projeto 
+[![portfolio](https://img.shields.io/badge/Acessa%20o%20link-Link%20aqui-orange)](https://roaring-cuchufli-7fd2f5.netlify.app)
+
+
+
+
 # LabPharmacy System: Gerenciamento de Farmácias e Medicamentos
 
 
