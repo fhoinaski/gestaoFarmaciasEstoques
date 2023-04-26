@@ -67,6 +67,7 @@ const AlertModal = ({ aberto, fechar, textoMensagem }) => {
 
 AlertModal.propTypes = {
   aberto: propTypes.bool.isRequired,
+  fechar: propTypes.func.isRequired,
   textoMensagem: propTypes.string.isRequired,
 };
 
