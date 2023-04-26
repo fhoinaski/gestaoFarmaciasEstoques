@@ -9,11 +9,12 @@ export { AuthContext };
 
 export const AuthProvider = ({ children }) => {
     const navigate = useNavigate();
-    const [userData, setUserData] = useState({
+    const [dadosUsuario, setDadosUsuario] = useState({
         email: '',
         password: '',
     });
 
+    
     const initialAuthState = JSON.parse(localStorage.getItem('isAuthenticated')) || false;
     const [isAuthenticated, setIsAuthenticated] = useState(initialAuthState);
     const inicialRegistroUsuario = JSON.parse(localStorage.getItem('registroUsuario')) || [];
@@ -56,22 +57,27 @@ export const AuthProvider = ({ children }) => {
         };
     
         // Verifica se o usuário existe nos usuários cadastrados.
-        const existingUser = registroUsuario.find(
+        const existeUsuario = registroUsuario.find(
           (registroUsuario) => registroUsuario.email === email
         );
       
-        if (!existingUser) {
+        // Se o usuário não existir, retorna um erro.
+        if (!existeUsuario) {
           setIsAuthenticated(false);
           return { error: 'E-mail não encontrado.' };
         }
       
-        if (existingUser.senha !== password) {
+        // Se a senha estiver incorreta, retorna um erro.
+        if (existeUsuario.senha !== password) {
           setIsAuthenticated(false);
           return { error: 'Senha incorreta.' };
         }
       
+        // Se o usuário existir e a senha estiver correta, atualiza o estado de 'isAuthenticated' para true e salva os dados do usuário no localStorage.
         setIsAuthenticated(true);
         localStorage.setItem("user", JSON.stringify(user));
+
+        //redireciona para a página de cadastro de farmácia
         navigate('/farmacias/cadastrar');
         return user;
       };
@@ -91,18 +97,19 @@ export const AuthProvider = ({ children }) => {
         return regex.test(senha);
     };
 
-    // Função para atualizar os dados do usuário no estado userData.
-    const updateUserData = (name, value) => {
-        setUserData({ ...userData, [name]: value });
+    // Função para atualizar os dados do usuário no estado dadosUsuario.
+    const atualizaDadosUsuario = (name, value) => {
+        setDadosUsuario({ ...dadosUsuario, [name]: value });
     };
 
     const value = {
         isAuthenticated,
-        userData,
+        dadosUsuario,
         loginUser,
         logoutUser,
         validarSenha,
-        updateUserData,
+        atualizaDadosUsuario
+  ,
         registrarUsuario
     };
 

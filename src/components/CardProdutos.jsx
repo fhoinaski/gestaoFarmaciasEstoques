@@ -4,7 +4,9 @@ import { IoReturnDownForwardOutline } from "react-icons/io5";
 
 const CardProdutos = ({ produtoInfo, onClick }) => {
   const [isFlipped, setIsFlipped] = useState(false);
+//controla o tamanho do card
   const [tamanhoCard, setTamanhoCard] = useState("h-40");
+
   // gira o card
   const handleClick = () => {
     setIsFlipped(!isFlipped);
