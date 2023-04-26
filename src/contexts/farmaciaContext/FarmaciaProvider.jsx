@@ -14,7 +14,7 @@ export const FarmaciaProvider = ({ children }) => {
   const [atualizarLista, setAtualizarLista] = useState(false);
 
 
-  const [farmData, setFarmData] = useState({
+  const [dadosFarmacia, setFarmData] = useState({
     razaoSocial: '',
     cnpj: '',
     nomeFantasia: '',
@@ -43,6 +43,8 @@ export const FarmaciaProvider = ({ children }) => {
 
     // Mescla as farmácias do localStorage com as farmácias do arquivo JSON
     const juntarFarmacias = [...farmacias, ...farmaciasData.farmacias];
+
+    // Atualiza o estado todasFarmacias com as farmácias do localStorage e do arquivo JSON
     setTodasFarmacias(juntarFarmacias);
 
     const exibirMapa = () => setCarregando(false);
@@ -63,9 +65,9 @@ export const FarmaciaProvider = ({ children }) => {
   };
 
 
-  const updateFarmData = (e) => {
+  const atualizaDadosFarmacia = (e) => {
     const { name, value } = e.target;
-    setFarmData({ ...farmData, [name]: value });
+    setFarmData({ ...dadosFarmacia, [name]: value });
   };
 
 
@@ -150,14 +152,14 @@ export const FarmaciaProvider = ({ children }) => {
   };
 
   const verificaCamposObrigatorios = () => {
-    const campoNaoPreenchido = Object.keys(nomeFormLabel).find((campo) => !Boolean(farmData[campo]));
+    const campoNaoPreenchido = Object.keys(nomeFormLabel).find((campo) => !Boolean(dadosFarmacia[campo]));
     return campoNaoPreenchido ? nomeFormLabel[campoNaoPreenchido] : null;
   };
 
 
   const value = {
-    farmData,
-    updateFarmData,
+    dadosFarmacia,
+    atualizaDadosFarmacia,
     registerFarmacia,
     verificaCamposObrigatorios,
     todasFarmacias,
