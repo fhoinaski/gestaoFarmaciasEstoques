@@ -43,7 +43,7 @@ export const MedicamentoProvider = ({ children }) => {
  
 
 
-  const updateMedicData = (name, value) => {
+  const atualizaDadosMedicamento = (name, value) => {
     setMedicamento({ ...medicamento, [name]: value });
   };
 
@@ -83,7 +83,7 @@ export const MedicamentoProvider = ({ children }) => {
 
   const value = {
     medicamento,
-    updateMedicData,
+    atualizaDadosMedicamento,
     registrarMedicamento,
     todosMedicamentos,
     carregando,

@@ -6,15 +6,15 @@ import AlertModal from '../components/AlertModal';
 
 const CadastroMedicamento = () => {
   const [cadastroSucesso, setCadastroSucesso] = useState(false);
-  const { medicamento, updateMedicData, registrarMedicamento } = useMedicamentoState();
+  const { medicamento, atualizaDadosMedicamento, registrarMedicamento } = useMedicamentoState();
   const [alertaAberto, setAlertaAberto] = useState(false);
   const [textoAlert, setTextoAlert] = useState('');
   const [valor, setValor] = useState('R$ ');
- 
 
+// Função para formatar o valor do medicamento
   const formatarValor = (valor) => {
     // Regex para extrair números, pontos e vírgulas
-    const regex = /[\d.,]+/g; 
+    const regex = /[\d.,]+/g;
     const valorNumerico = valor.match(regex);
 
     if (!valorNumerico) {
@@ -25,42 +25,43 @@ const CadastroMedicamento = () => {
     // Converte o valor extraído para número
     const numero = parseFloat(valorString);
 
-
+    // Formata o número para o padrão de moeda brasileiro
     return new Intl.NumberFormat('pt-BR', {
       style: 'currency',
       currency: 'BRL',
     }).format(numero);
   };
+
   const handleFocus = (e) => {
     if (e.target.value === '') {
       setValor('R$ ');
-      updateMedicData(e.target.name, 'R$ ');
+      atualizaDadosMedicamento(e.target.name, 'R$ ');
     }
   };
 
   const handleBlur = (e) => {
     if (e.target.name === 'precoUnitario') {
       const valorFormatado = formatarValor(e.target.value);
-      updateMedicData(e.target.name, valorFormatado);
+      atualizaDadosMedicamento(e.target.name, valorFormatado);
     }
   };
 
   const handleChange = (e) => {
-    updateMedicData(e.target.name, e.target.value);
+    atualizaDadosMedicamento(e.target.name, e.target.value);
 
 
   };
 
   const handleSubmi = (e) => {
     e.preventDefault();
-    
-      const novoMedicamento = registrarMedicamento(medicamento);
-      if (novoMedicamento) {
-        setCadastroSucesso(true);
-      } if (!novoMedicamento) {
-        setAlertaAberto(true);
-        setTextoAlert('Medicamento já cadastrado');
-      }
+
+    const novoMedicamento = registrarMedicamento(medicamento);
+    if (novoMedicamento) {
+      setCadastroSucesso(true);
+    } if (!novoMedicamento) {
+      setAlertaAberto(true);
+      setTextoAlert('Medicamento já cadastrado');
+    }
 
   };
 
