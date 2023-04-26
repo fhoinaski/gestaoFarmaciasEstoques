@@ -14,7 +14,7 @@ const CadastroFarmacia = () => {
   const [textoAlert, setTextoAlert] = useState('');
   const [cnpjCompleto, setCnpjCompleto] = useState(false);
 
-  const { farmData, updateFarmData, registerFarmacia, verificaCamposObrigatorios, buscarAtualizarEndereco } = useFarmaciaState();
+  const { dadosFarmacia, atualizaDadosFarmacia, registerFarmacia, verificaCamposObrigatorios, buscarAtualizarEndereco } = useFarmaciaState();
 
   // gira o card
   const handleClick = () => {
@@ -25,6 +25,7 @@ const CadastroFarmacia = () => {
   const handleBlurCnpj = (e) => {
     const cnpj = e.target.value;
     
+    // verifica se o cnpj está completo
     if (cnpj.replace(/\D/g, '').length !== 14) {
        setAlertaAberto(true);
       setTextoAlert('CNPJ está incompleto');
@@ -48,7 +49,7 @@ const CadastroFarmacia = () => {
       setAlertaAberto(true);
       setTextoAlert(`Preencha o campo obrigatório: ${campoNaoPreenchido}`);
     } else {
-      const farmacia = registerFarmacia(farmData);
+      const farmacia = registerFarmacia(dadosFarmacia);
       if (farmacia) {
         setCadastroSucesso(true);
       } else {
@@ -103,8 +104,8 @@ const CadastroFarmacia = () => {
                         type="text"
                         name="razaoSocial"
                         id="razaoSocial"
-                        value={farmData.razaoSocial}
-                        onChange={updateFarmData}
+                        value={dadosFarmacia.razaoSocial}
+                        onChange={atualizaDadosFarmacia}
                         required
                       />
                     </FormGroup>
@@ -118,8 +119,8 @@ const CadastroFarmacia = () => {
                         type="text"
                         name="cnpj"
                         id="cnpj"
-                        value={farmData.cnpj}
-                        onChange={updateFarmData}
+                        value={dadosFarmacia.cnpj}
+                        onChange={atualizaDadosFarmacia}
                         onBlur={handleBlurCnpj}
                         required
                       />
@@ -132,8 +133,8 @@ const CadastroFarmacia = () => {
                         type="text"
                         name="nomeFantasia"
                         id="nomeFantasia"
-                        value={farmData.nomeFantasia}
-                        onChange={updateFarmData}
+                        value={dadosFarmacia.nomeFantasia}
+                        onChange={atualizaDadosFarmacia}
                         required
                       />
                     </FormGroup>
@@ -145,8 +146,8 @@ const CadastroFarmacia = () => {
                         type="email"
                         name="email"
                         id="email"
-                        value={farmData.email}
-                        onChange={updateFarmData}
+                        value={dadosFarmacia.email}
+                        onChange={atualizaDadosFarmacia}
                         required
                       />
                     </FormGroup>
@@ -159,8 +160,8 @@ const CadastroFarmacia = () => {
                         type="tel"
                         name="telefone"
                         id="telefone"
-                        value={farmData.telefone}
-                        onChange={updateFarmData}
+                        value={dadosFarmacia.telefone}
+                        onChange={atualizaDadosFarmacia}
                         required
                       />
                     </FormGroup>
@@ -173,8 +174,8 @@ const CadastroFarmacia = () => {
                         type="tel"
                         name="celular"
                         id="celular"
-                        value={farmData.celular}
-                        onChange={updateFarmData}
+                        value={dadosFarmacia.celular}
+                        onChange={atualizaDadosFarmacia}
                         required
                       />
                     </FormGroup>
@@ -199,8 +200,8 @@ const CadastroFarmacia = () => {
                   id="cep"
                   name="cep"
                   maxLength={8}
-                  value={farmData.cep}
-                  onChange={updateFarmData}
+                  value={dadosFarmacia.cep}
+                  onChange={atualizaDadosFarmacia}
                   onBlur={(e) => buscarAtualizarEndereco(e.target.value)}
 
                   required
@@ -212,8 +213,8 @@ const CadastroFarmacia = () => {
                   type="text"
                   id="logradouro"
                   name="logradouro"
-                  value={farmData.logradouro}
-                  onChange={updateFarmData}
+                  value={dadosFarmacia.logradouro}
+                  onChange={atualizaDadosFarmacia}
 
                   required
                 />
@@ -224,8 +225,8 @@ const CadastroFarmacia = () => {
                   type="text"
                   id="logradouroNumero"
                   name="logradouroNumero"
-                  value={farmData.logradouroNumero}
-                  onChange={updateFarmData}
+                  value={dadosFarmacia.logradouroNumero}
+                  onChange={atualizaDadosFarmacia}
                   required
                 />
               </FormGroup>
@@ -235,8 +236,8 @@ const CadastroFarmacia = () => {
                   type="text"
                   id="bairro"
                   name="bairro"
-                  value={farmData.bairro}
-                  onChange={updateFarmData}
+                  value={dadosFarmacia.bairro}
+                  onChange={atualizaDadosFarmacia}
                   required
                 />
               </FormGroup>
@@ -246,8 +247,8 @@ const CadastroFarmacia = () => {
                   type="text"
                   id="complemento"
                   name="complemento"
-                  value={farmData.complemento}
-                  onChange={updateFarmData}
+                  value={dadosFarmacia.complemento}
+                  onChange={atualizaDadosFarmacia}
                 />
               </FormGroup>
               <FormGroup className="col-md-9">
@@ -256,8 +257,8 @@ const CadastroFarmacia = () => {
                   type="text"
                   id="cidade"
                   name="cidade"
-                  value={farmData.cidade}
-                  onChange={updateFarmData}
+                  value={dadosFarmacia.cidade}
+                  onChange={atualizaDadosFarmacia}
                   required
                 />
               </FormGroup>
@@ -267,8 +268,8 @@ const CadastroFarmacia = () => {
                   type="text"
                   id="estado"
                   name="estado"
-                  value={farmData.estado}
-                  onChange={updateFarmData}
+                  value={dadosFarmacia.estado}
+                  onChange={atualizaDadosFarmacia}
                   required
                 />
               </FormGroup>
@@ -278,8 +279,8 @@ const CadastroFarmacia = () => {
                   type="text"
                   id="latitude"
                   name="latitude"
-                  value={farmData.latitude}
-                  onChange={updateFarmData}
+                  value={dadosFarmacia.latitude}
+                  onChange={atualizaDadosFarmacia}
                   required
                 />
               </FormGroup>
@@ -289,8 +290,8 @@ const CadastroFarmacia = () => {
                   type="text"
                   id="longitude"
                   name="longitude"
-                  value={farmData.longitude}
-                  onChange={updateFarmData}
+                  value={dadosFarmacia.longitude}
+                  onChange={atualizaDadosFarmacia}
                   required
                 />
               </FormGroup>

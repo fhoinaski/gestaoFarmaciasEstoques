@@ -6,16 +6,14 @@ import {AiOutlineUserAdd} from 'react-icons/ai';
 import { Link } from 'react-router-dom';
 
 const Login = () => {
-  const { loginUser, updateUserData, userData } = useAuthState();
+  const { loginUser, atualizaDadosUsuario, dadosUsuario } = useAuthState();
   const [erro, setErro] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(userData);
-    const result = await loginUser(userData);
-    console.log(result);
-    if (result.error) {
-      setErro(result.error);
+    const resultado = await loginUser(dadosUsuario);    
+    if (resultado.error) {
+      setErro(resultado.error);
     } else {
       setErro('');
     }
@@ -34,8 +32,8 @@ const Login = () => {
                   <Form.Control
                     type="email"
                     name="email"
-                    value={userData.email}
-                    onChange={(e) => updateUserData("email", e.target.value)}
+                    value={dadosUsuario.email}
+                    onChange={(e) => atualizaDadosUsuario("email", e.target.value)}
                     placeholder="Digite seu Email"
                     required
                     autoComplete="email"
@@ -46,8 +44,8 @@ const Login = () => {
                   <Form.Control
                     type="password"
                     name="password"
-                    value={userData.password}
-                    onChange={(e) => updateUserData("password", e.target.value)}
+                    value={dadosUsuario.password}
+                    onChange={(e) => atualizaDadosUsuario("password", e.target.value)}
                     placeholder="Digite sua senha"
                     required
                     autoComplete="current-password"
